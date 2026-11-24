@@ -40,7 +40,7 @@ This theme gives the Windhawk interface a macOS-inspired look: a dark flat sideb
 > This theme draws a solid background, so the **Window backdrop** setting (Mica, Acrylic, Mica Alt) has no visible effect with it.
 
 > [!NOTE]
-> The theme follows the Windhawk color scheme, so it also works in light mode. To switch, open **Settings** in Windhawk and set **Theme** to Dark, Light, or System. All screenshots here use the dark scheme.
+> The theme follows the Windhawk color scheme, so it also works in light mode. To switch, open **Settings** in Windhawk and set **Theme** to Dark, Light, or System.
 
 > [!NOTE]
 > The theme uses the Plus Jakarta Sans font if it is installed on your PC. Otherwise it falls back to SF Pro or Segoe UI. The font is not bundled with the theme.
