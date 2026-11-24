@@ -4,7 +4,8 @@ This theme gives the Windhawk interface a macOS-inspired look: a dark flat sideb
 
 **Author**: [grn15RenS](https://github.com/grn15RenS)
 
-![Installed Mods](screenshot-home.png)
+![Installed Mods](<img width="1059" height="810" alt="image" src="https://github.com/user-attachments/assets/3cacca89-fdb3-4126-ba99-f3e55f7ebca1" />
+)
 
 <details>
 <summary>More screenshots</summary>
