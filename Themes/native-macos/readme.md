@@ -28,19 +28,23 @@ This theme gives the Windhawk interface a macOS-inspired look: a dark flat sideb
 
 ## Notes
 
-- Requires the Windhawk Skin mod with **Remove native title bar** turned on, so the native title bar is replaced by the traffic lights. This option needs Windows 11 22H2 (build 22621) or newer. Without it, you will see both the native title bar and the traffic lights.
+> [!IMPORTANT]
+> Requires the Windhawk Skin mod with **Remove native title bar** turned on, so the native title bar is replaced by the traffic lights. This option needs Windows 11 22H2 (build 22621) or newer. Without it, you will see both the native title bar and the traffic lights.
 
-- This theme draws a solid background, so the **Window backdrop** setting (Mica, Acrylic, Mica Alt) has no visible effect with it.
+> [!NOTE]
+> This theme draws a solid background, so the **Window backdrop** setting (Mica, Acrylic, Mica Alt) has no visible effect with it.
 
-- The theme follows the Windhawk color scheme, so it also works in light mode. To switch, open **Settings** in Windhawk and set **Theme** to Dark, Light, or System. All screenshots here use the dark scheme.
-  
-- The theme uses the Plus Jakarta Sans font if it is installed on your PC. Otherwise it falls back to SF Pro or Segoe UI. The font is not bundled with the theme.
+> [!NOTE]
+> The theme follows the Windhawk color scheme, so it also works in light mode. To switch, open **Settings** in Windhawk and set **Theme** to Dark, Light, or System. All screenshots here use the dark scheme.
 
-- To show the author name on each mod card, the theme downloads the public mod catalog from `mods.windhawk.net`. If the catalog cannot be reached, cards show "Local mod" instead.
+> [!NOTE]
+> The theme uses the Plus Jakarta Sans font if it is installed on your PC. Otherwise it falls back to SF Pro or Segoe UI. The font is not bundled with the theme.
 
-- The version text at the bottom of the sidebar is fixed text in the theme and does not follow your installed Windhawk version.
+> [!NOTE]
+> To show the author name on each mod card, the theme downloads the public mod catalog from `mods.windhawk.net`. If the catalog cannot be reached, cards show "Local mod" instead. The version text at the bottom of the sidebar is fixed text in the theme and does not follow your installed Windhawk version.
 
-- The theme depends on the internal structure of the Windhawk UI, so it may break after a Windhawk update.
+> [!WARNING]
+> The theme depends on the internal structure of the Windhawk UI, so it may break after a Windhawk update.
 
 ## Theme selection
 
