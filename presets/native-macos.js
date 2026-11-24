@@ -13,6 +13,12 @@
   --r-md: 12px;
   --r-sm: 8px;
   --header-row-h: 40px;
+  --card-min: 340px;         /* minimum card width; smaller = more columns */
+  --font-ui: "Plus Jakarta Sans", "Plus Jakarta Sans Medium", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", sans-serif;
+  --light-size: 14px;        /* traffic light diameter */
+  --light-gap: 9px;          /* gap between traffic lights */
+  --light-icon: 9px;         /* size of the x / - / arrow symbol on hover */
+  --light-center-y: 31px;    /* vertical center = collapse button: top 14px + height 34px / 2 */
 }
 
 body {
@@ -116,7 +122,6 @@ body {
 }
 
 /* Number input */
-.ant-input-number,
 .ant-input-number-input-wrap,
 .ant-input-number-input {
   border-radius: var(--r-md) !important;
@@ -143,7 +148,7 @@ body {
 }
 
 /* =====================================================================
-   2. CONTROLS: switch, buttons, inputs, scrollbar, fonts
+   2. CONTROLS AND TYPOGRAPHY: switch, buttons, inputs, scrollbar, fonts
    ===================================================================== */
 
 /* Switch: macOS style, blue when on */
@@ -261,6 +266,12 @@ textarea,
   -webkit-font-smoothing: antialiased;
 }
 
+/* UI font across the whole app (code blocks excluded) */
+html body #root,
+html body #root :is(button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, span, div, a, label, li, td, th):not(:is(code, pre, kbd, samp) *) {
+  font-family: var(--font-ui) !important;
+}
+
 .ant-card-body,
 .ant-card-body p,
 .ant-card-body .ant-typography,
@@ -296,7 +307,7 @@ h1, h2 {
 }
 
 /* =====================================================================
-   3. LAYOUT: content area, card grid, details page
+   3. LAYOUT: content area, card grid
    ===================================================================== */
 #root {
   box-sizing: border-box;
@@ -332,7 +343,7 @@ html.wh-collapsed #root {
 /* Card grid (mod list only) */
 #root div:has(> .ant-card [data-testid="mod-card-title"]) {
   display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr)) !important;
   gap: 16px !important;
   justify-content: stretch !important;
   justify-items: stretch !important;
@@ -358,35 +369,311 @@ html.wh-collapsed #root {
   margin-right: 0 !important;
 }
 
-/* Mod details page: no card effect */
-#root .ant-card:not(:has([data-testid="mod-card-title"])) {
-  background-color: transparent !important;
-  background-image: none !important;
-  border: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border-radius: 0 !important;
+/* Script-marked grid: lists whose cards are wrapped (e.g. by a ribbon wrapper) */
+#root .wh-card-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr)) !important;
+  gap: 16px !important;
+  justify-content: stretch !important;
+  justify-items: stretch !important;
+  align-items: stretch !important;
   width: 100% !important;
   max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-#root .ant-card:not(:has([data-testid="mod-card-title"])):hover {
-  background-color: transparent !important;
-  border-color: transparent !important;
+#root .wh-card-grid > * {
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+#root .wh-card-grid .ant-ribbon-wrapper {
+  height: 100%;
+}
+
+#root .wh-card-grid .ant-card {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
 }
 
 /* =====================================================================
-   4. SIDEBAR
+   4. SETTINGS PAGE (System Settings style)
    ===================================================================== */
-[data-testid="app-header"] {
+#root [data-testid="settings-page"] {
+  --set-bg: rgba(255, 255, 255, 0.05);    /* group background */
+  --set-line: rgba(255, 255, 255, 0.09);  /* border + hairline between rows */
+  --set-radius: 12px;                     /* group corner radius */
+  --set-gap: 16px;                        /* gap between groups */
+  width: 100% !important;
+  max-width: 720px !important;            /* content column width */
+  padding: calc(var(--light-center-y) - 13px) 0 32px !important;   /* title aligned with the traffic lights */
+  box-sizing: border-box !important;
+  margin: 0 auto !important;
+}
+
+#root [data-testid="settings-page"] [class*="Settings__SettingsList"] {
+  display: flex !important;
+  flex-direction: column !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Each item is a slice of a group */
+#root [data-testid="settings-page"] [class*="Settings__SettingsList"] > [data-key] {
+  position: relative;
+  padding: 0 !important;
+  background: var(--set-bg) !important;
+  border: 0 solid var(--set-line) !important;
+  border-left-width: 1px !important;
+  border-right-width: 1px !important;
+}
+
+/* Group start: items 1, 3, 5 */
+#root [data-testid="settings-page"] [class*="Settings__SettingsList"] > [data-key]:is(:nth-child(1), :nth-child(3), :nth-child(5)) {
+  border-top-width: 1px !important;
+  border-top-left-radius: var(--set-radius);
+  border-top-right-radius: var(--set-radius);
+}
+
+/* Group end: items 2, 4, 5 */
+#root [data-testid="settings-page"] [class*="Settings__SettingsList"] > [data-key]:is(:nth-child(2), :nth-child(4), :nth-child(5)) {
+  border-bottom-width: 1px !important;
+  border-bottom-left-radius: var(--set-radius);
+  border-bottom-right-radius: var(--set-radius);
+  margin-bottom: var(--set-gap) !important;
+}
+
+/* Inset hairline between rows inside a group (items 2 and 4) */
+#root [data-testid="settings-page"] [class*="Settings__SettingsList"] > [data-key]:is(:nth-child(2), :nth-child(4))::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: var(--set-line);
+}
+
+/* Row: title on top, control below (suits Export/Import) */
+#root [data-testid="settings-page"] [class*="SettingRow-sc-"] {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  width: 100% !important;
+  padding: 12px 16px !important;
+  box-sizing: border-box !important;
+}
+
+/* Rows with a switch / select / segmented control: control moves to the right */
+#root [data-testid="settings-page"] [class*="SettingRow-sc-"]:has(.ant-switch, .ant-select, .ant-segmented, .ant-radio-group) {
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+}
+
+#root [data-testid="settings-page"] [class*="SettingRow-sc-"]:has(.ant-switch, .ant-select, .ant-segmented, .ant-radio-group) > :first-child {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+#root [data-testid="settings-page"] [class*="SettingRow-sc-"]:has(.ant-switch, .ant-select, .ant-segmented, .ant-radio-group) > :not(:first-child) {
+  flex: none !important;
+  margin: 0 !important;
+}
+
+#root [data-testid="settings-page"] .windhawk-row-meta-title {
+  margin: 0 0 2px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+
+#root [data-testid="settings-page"] .windhawk-row-meta-description {
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  opacity: 0.65;
+}
+
+/* Page title (text set by the script through data-wh-title) */
+#root [data-testid="settings-page"]::before {
+  content: attr(data-wh-title);
+  display: block;
+  line-height: 22px;
+  margin: 0 0 40px;
+  text-align: center;          /* use left for left-aligned */
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* =====================================================================
+   5. ABOUT PAGE (macOS style)
+   ===================================================================== */
+#root [data-testid="about-page"] {
+  --set-bg: rgba(255, 255, 255, 0.05);    /* card background */
+  --set-line: rgba(255, 255, 255, 0.09);  /* border + hairline between rows */
+  --set-radius: 12px;                     /* card corner radius */
+  --about-w: 560px;                       /* column width */
+  width: 100% !important;
+  max-width: var(--about-w) !important;
+  margin: 0 auto !important;
+  padding: 44px 0 32px !important;        /* page top / bottom spacing */
+  box-sizing: border-box !important;
+}
+
+#root [data-testid="about-page"] [class*="About__AboutContent"] {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;                   /* gap between cards */
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Section 1: name, version, tagline (no card, centered) */
+#root [data-testid="about-page"] [class*="About__ContentSection"]:first-child {
+  text-align: center !important;
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+}
+
+#root [data-testid="about-page"] [class*="About__ContentSection"]:first-child h1 {
+  margin: 0 0 6px !important;
+  font-size: 30px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+}
+
+#root [data-testid="about-page"] [class*="About__ContentSection"]:first-child h3 {
+  margin: 2px 0 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  opacity: 0.7;
+}
+
+/* Sections 2 and 3: inset cards */
+#root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) {
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  background: var(--set-bg) !important;
+  border: 1px solid var(--set-line) !important;
+  border-radius: var(--set-radius) !important;
+  overflow: hidden;
+}
+
+/* Card title: small caps */
+#root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > h1 {
+  margin: 0 !important;
+  padding: 14px 16px 10px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase;
+  text-align: left !important;
+  opacity: 0.55;
+}
+
+#root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div {
+  margin: 0 !important;
+  padding: 0 16px !important;
+}
+
+/* One row: label left, description + arrow right, hairline on top */
+#root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div {
+  position: relative;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  margin: 0 !important;
+  padding: 11px 0 !important;
+  border-top: 1px solid var(--set-line);
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  text-align: left !important;
+}
+
+#root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div:not(:has(> a)) {
+  opacity: 0.65;
+}
+
+/* Links: white instead of blue, whole row clickable */
+#root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div > a {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+}
+
+#root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div > a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* Description (wrapped in a span by the script) */
+#root [data-testid="about-page"] .wh-about-desc {
+  margin-left: auto;
+  min-width: 0;
+  text-align: right;
+  opacity: 0.6;
+}
+
+/* Arrow at the right end of rows that contain a link */
+#root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div:has(> a)::after {
+  content: "";
+  width: 11px;
+  height: 11px;
+  box-sizing: border-box;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  background: linear-gradient(to bottom right, transparent calc(50% - 1px), currentColor calc(50% - 1px), currentColor calc(50% + 1px), transparent calc(50% + 1px));
+  margin-right: 2px;
+  flex: none;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+#root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div:has(> a):not(:has(> .wh-about-desc))::after {
+  margin-left: auto;
+}
+
+/* Logo above the About title (copied from the sidebar logo by the script) */
+#root [data-testid="about-page"] .wh-about-logo {
+  display: block !important;
+  width: 72px !important;
+  height: 72px !important;
+  margin: 0 auto 14px !important;
+  object-fit: contain;
+}
+
+#root [data-testid="about-page"] .wh-about-logo img,
+#root [data-testid="about-page"] .wh-about-logo svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* =====================================================================
+   6. SIDEBAR
+   The logo stays fixed; only the menu down to the stats box scrolls.
+   --sb-logo-h is set by the script (height of the logo area).
+   ===================================================================== */
+html body [data-testid="app-header"] {
   position: fixed !important;
-  top: 0 !important;
+  top: var(--sb-logo-h, 140px) !important;
   left: 0 !important;
   bottom: auto !important;
   width: 200px !important;
-  height: calc(100vh - 64px) !important;
-  max-height: calc(100vh - 64px) !important;
+  height: calc(100vh - 64px - var(--sb-logo-h, 140px)) !important;
+  max-height: calc(100vh - 64px - var(--sb-logo-h, 140px)) !important;
   min-height: 0 !important;
   box-sizing: border-box;
   display: flex !important;
@@ -395,7 +682,7 @@ html.wh-collapsed #root {
   justify-content: flex-start !important;
   align-items: stretch !important;
   gap: 10px;
-  padding: 24px 14px !important;
+  padding: 8px 14px 24px !important;   /* 8px top = gap between logo and first menu item */
   background: rgba(255, 255, 255, 0.03) !important;
   border: none !important;
   border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -404,16 +691,51 @@ html.wh-collapsed #root {
   overflow-x: clip !important;
   overflow-y: auto !important;
   overscroll-behavior: contain;
-  scrollbar-width: none;
+  scrollbar-width: auto !important;
   transition: width 0.25s ease;
 }
 
-[data-testid="app-header"]::-webkit-scrollbar {
-  display: none;
+/* Scrollbar: zero-width native bar, single-layer thumb (no transparent border trick) */
+html body [data-testid="app-header"]::-webkit-scrollbar {
+  display: block !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
-html.wh-collapsed [data-testid="app-header"] {
-  width: 64px !important;
+html body [data-testid="app-header"]::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+html body [data-testid="app-header"]::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22) !important;
+  background-clip: border-box !important;
+  border: none !important;
+  border-radius: 999px !important;
+}
+
+html body [data-testid="app-header"]::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Prevent double scrollbars: only the sidebar itself may scroll */
+html body [data-testid="app-header"] * {
+  scrollbar-width: none !important;
+}
+
+html body [data-testid="app-header"] *::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body [data-testid="app-header"] .wh-cscroll-track,
+html body [data-testid="app-header"] .wh-cscroll-thumb {
+  display: none !important;
+}
+
+html body [data-testid="app-header"] [class*="AppHeader__HeaderButtonsWrapper"],
+html body [data-testid="app-header"] #wh-groups-nav,
+html body [data-testid="app-header"] #wh-stats {
+  overflow: visible !important;
+  max-height: none !important;
 }
 
 /* Nothing in the sidebar may shrink, so it scrolls instead */
@@ -446,7 +768,7 @@ html.wh-collapsed [data-testid="app-header"] {
   background: transparent;
   color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  transition: left 0.25s ease, background 0.2s ease, color 0.2s ease;
+  transition: left 0.25s ease, top 0.25s ease, background 0.2s ease, color 0.2s ease;
 }
 
 #wh-sb-toggle2:hover {
@@ -456,6 +778,78 @@ html.wh-collapsed [data-testid="app-header"] {
 
 html.wh-collapsed #wh-sb-toggle2 {
   left: 15px;
+  top: 30px;
+}
+
+/* Window controls: macOS traffic lights */
+#wh-lights {
+  position: fixed;
+  top: calc(var(--light-center-y) - var(--light-size) / 2);
+  left: 16px;
+  z-index: 99999;
+  display: flex;
+  gap: var(--light-gap);
+  transition: top 0.25s ease, left 0.25s ease, gap 0.25s ease;
+}
+
+html.wh-collapsed #wh-lights {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  top: 10px;
+  left: 8px;
+  gap: 6px;
+}
+
+.wh-light {
+  width: var(--light-size);
+  height: var(--light-size);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: default;
+  transition: filter 0.1s ease;
+}
+
+.wh-light:active {
+  filter: brightness(0.75);
+}
+
+.wh-light-close { background: #ff5f57; }
+.wh-light-minimize { background: #febc2e; }
+.wh-light-maximize { background: #28c840; }
+
+#wh-lights.wh-inactive:not(:hover) .wh-light {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.wh-light svg {
+  width: var(--light-icon);
+  height: var(--light-icon);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease;
+}
+
+.wh-light svg path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.wh-light-maximize svg path {
+  fill: currentColor;
+  stroke: none;
+}
+
+#wh-lights:hover .wh-light svg {
+  opacity: 1;
 }
 
 /* Logo: icon on top, text below, centered */
@@ -463,18 +857,26 @@ html.wh-collapsed #wh-sb-toggle2 {
   width: 100%;
 }
 
-[class*="AppHeader__HeaderLogo"]:not([class*="HeaderLogoButton"]) {
-  position: static !important;
+html body [data-testid="app-header"] [class*="AppHeader__HeaderLogo"]:not([class*="HeaderLogoButton"]) {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 200px !important;
   height: auto !important;
-  padding: 16px 0 14px !important;
-  border-bottom: none !important;
+  box-sizing: border-box !important;
   display: flex !important;
   justify-content: center !important;
-  transition: padding 0.25s ease;
+  z-index: 51 !important;
+  padding: 54px 0 14px !important;   /* 54px = 30px default + 24px of sidebar padding that no longer applies */
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-bottom: none !important;
+  transition: padding 0.25s ease, width 0.25s ease !important;
 }
 
-html.wh-collapsed [class*="AppHeader__HeaderLogo"]:not([class*="HeaderLogoButton"]) {
-  padding-top: 40px !important;
+html.wh-collapsed body [data-testid="app-header"] [class*="AppHeader__HeaderLogo"]:not([class*="HeaderLogoButton"]) {
+  padding-top: 64px !important;   /* 40px default + 24px of sidebar padding that no longer applies */
+  width: 64px !important;
 }
 
 [class*="AppHeader__HeaderLogoButton"] {
@@ -690,8 +1092,13 @@ body::after {
 
 /* ----- Collapsed state ----- */
 html.wh-collapsed [data-testid="app-header"] {
+  width: 64px !important;
   height: 100vh !important;
   max-height: 100vh !important;
+}
+
+html.wh-collapsed body [data-testid="app-header"]::-webkit-scrollbar {
+  display: none !important;   /* a scrollbar would push the icons in a 64px sidebar */
 }
 
 html.wh-collapsed body::after {
@@ -758,7 +1165,7 @@ html.wh-collapsed #wh-stats {
 }
 
 /* =====================================================================
-   5. HOME HEADER: title, search row, banner, New Mod, view toggle
+   7. HOME HEADER: title, search row, banner, New Mod, view toggle
    ===================================================================== */
 [class*="ModsBrowserLocal__ModsContainer"] {
   padding-top: 26px !important;
@@ -987,7 +1394,7 @@ html.wh-collapsed #wh-stats {
 }
 
 /* =====================================================================
-   6. MOD CARD
+   8. MOD CARD
    ===================================================================== */
 .ant-card-bordered {
   position: relative;
@@ -1000,7 +1407,6 @@ html.wh-collapsed #wh-stats {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
     0 1px 2px rgba(0, 0, 0, 0.30) !important;
-  border-radius: var(--r-lg) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-top-color: rgba(255, 255, 255, 0.10) !important;
   transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
@@ -1047,7 +1453,7 @@ html.wh-collapsed #wh-stats {
   display: none !important;
 }
 
-/* Description (must come before the title rule) */
+/* Description (must come before the title rule: equal specificity, later wins) */
 .ant-card-body p,
 .ant-card-body .ant-typography,
 [class*="ModCard"] .ant-typography {
@@ -1282,6 +1688,781 @@ html.wh-collapsed #wh-stats {
 #root .ant-ribbon-wrapper:has([data-testid="mod-card-switch"]) [data-testid="mod-card-title"] .ant-ribbon {
   display: none !important;
 }
+
+/* =====================================================================
+   9. MOD DETAILS PAGE
+   Header grid rows: 1 version pills, 2 title + share/visit, 3 ID,
+                     4 version/author/target, 5 description,
+                     6 action buttons + rating
+   ===================================================================== */
+:root {
+  --md-fill: rgba(255, 255, 255, 0.08);          /* secondary button background */
+  --md-fill-hover: rgba(255, 255, 255, 0.14);
+  --md-line: rgba(255, 255, 255, 0.12);          /* thin border */
+  --md-ink: rgba(255, 255, 255, 0.92);           /* primary text */
+  --md-ink-2: rgba(255, 255, 255, 0.6);          /* secondary text */
+  --md-title: 34px;                              /* mod title size */
+  --md-btn-h: 38px;                              /* height of all buttons and pills */
+  --md-accent: #0a84ff;
+  --md-back-top: 8px;                            /* back button offset from the top */
+  --md-donate: #ff453a;                          /* Donate accent (heart) */
+  --md-donate-text: #ff7a72;                     /* Donate text */
+  --md-danger: #ff453a;                          /* Remove button */
+}
+
+html body[data-theme="light"] {
+  --md-fill: rgba(0, 0, 0, 0.06);
+  --md-fill-hover: rgba(0, 0, 0, 0.1);
+  --md-line: rgba(0, 0, 0, 0.1);
+  --md-ink: rgba(0, 0, 0, 0.88);
+  --md-ink-2: rgba(0, 0, 0, 0.55);
+  --md-donate: #e5251b;
+  --md-donate-text: #c4170f;
+  --md-danger: #d70015;
+}
+
+/* ----- Tabs: segmented control spanning the full width ----- */
+.ant-tabs-nav:has([data-testid^="mod-details-tab-"]) {
+  margin: 0 0 20px !important;
+}
+
+/* No long underline or ink bar under the active tab */
+.ant-tabs-nav:has([data-testid^="mod-details-tab-"])::before {
+  display: none !important;
+}
+
+.ant-tabs-nav-list:has([data-testid^="mod-details-tab-"]) > .ant-tabs-ink-bar {
+  display: none !important;
+}
+
+html body .ant-tabs-nav-list:has([data-testid^="mod-details-tab-"]) {
+  --tab-bg: rgba(255, 255, 255, 0.06);         /* container background */
+  --tab-active: rgba(255, 255, 255, 0.16);     /* active tab background */
+  --tab-text: rgba(255, 255, 255, 0.65);       /* normal tab text */
+  --tab-text-active: #fff;                     /* active / hover tab text */
+  box-sizing: border-box !important;
+  flex: none !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  gap: 4px !important;
+  padding: 4px !important;
+  border-radius: 999px !important;
+  background: var(--tab-bg);
+}
+
+html body .ant-tabs-tab:has([data-testid^="mod-details-tab-"]) {
+  flex: none !important;
+  justify-content: center !important;
+  min-height: 38px;
+  margin: 0 !important;
+  padding: 0 22px !important;
+  border-radius: 999px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  color: var(--tab-text) !important;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.ant-tabs-tab:has([data-testid^="mod-details-tab-"]) .ant-tabs-tab-btn {
+  color: inherit !important;
+  text-shadow: none !important;
+}
+
+.ant-tabs-tab:has([data-testid^="mod-details-tab-"]):hover {
+  color: var(--tab-text-active) !important;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active:has([data-testid^="mod-details-tab-"]) {
+  background: var(--tab-active);
+  color: var(--tab-text-active) !important;
+  box-shadow: inset 0 0 0 1px rgba(10, 132, 255, 0.5);
+}
+
+/* ----- Header frame: full-width wrappers, content laid out on a 3-column grid ----- */
+html body .ant-card-head-title:has([data-testid="mod-details-back"]) {
+  display: block !important;
+  flex: 1 1 100% !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+  white-space: normal !important;
+}
+
+html body [class*="ModDetailsHeader__ModDetailsHeaderWrapper"] {
+  position: relative;
+  display: block !important;
+}
+
+html body .ant-card-meta:has([class*="ModDetailsView__ModVersionRadioGroup"]) {
+  display: block !important;
+}
+
+html body .ant-card-meta-section:has([class*="ModDetailsView__ModVersionRadioGroup"]) {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  white-space: normal !important;
+}
+
+html body [class*="ModDetailsHeader__ModDetailsHeaderWrapper"],
+html body .ant-card-meta:has([class*="ModDetailsView__ModVersionRadioGroup"]),
+html body .ant-card-meta-section:has([class*="ModDetailsView__ModVersionRadioGroup"]) {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+}
+
+/* Flatten the intermediate wrappers so every element becomes a grid item */
+html body .ant-card-meta-section:has([class*="ModDetailsView__ModVersionRadioGroup"]) > .ant-card-meta-title,
+html body .ant-card-meta-section:has([class*="ModDetailsView__ModVersionRadioGroup"]) > .ant-card-meta-description,
+html body [class*="ModDetailsHeader__CardTitleFirstLine"],
+html body .ant-card-meta-section div:has(> [class*="ModMetadataLine__MetadataLineWrapper"]) {
+  display: contents !important;
+}
+
+/* Local mods (no version pills): leave room above for the back button */
+html body [class*="ModDetailsHeader__ModDetailsHeaderWrapper"]:not(:has([class*="ModDetailsView__ModVersionRadioGroup"])) {
+  padding-top: calc(var(--md-back-top) + 38px) !important;
+}
+
+/* ----- Row 1: back button (left) + version pills ----- */
+html body [data-testid="mod-details-back"] {
+  position: absolute !important;
+  top: var(--md-back-top) !important;
+  left: 0;
+  z-index: 2;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background: var(--md-fill) !important;
+  border: 1px solid var(--md-line) !important;
+  box-shadow: none !important;
+  color: var(--md-ink) !important;
+  font-size: 0 !important;
+}
+
+[data-testid="mod-details-back"]:hover {
+  background: var(--md-fill-hover) !important;
+}
+
+/* Built-in arrow icon replaced by a "<" chevron */
+html body [data-testid="mod-details-back"] > * {
+  display: none !important;
+}
+
+html body [data-testid="mod-details-back"]::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateX(2px) rotate(45deg);
+}
+
+html body [class*="ModDetailsView__ModVersionRadioGroup"] {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  justify-self: start;
+  display: inline-flex !important;
+  gap: 8px !important;
+  margin: 0 0 18px 46px;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+html body [class*="ModDetailsView__ModVersionRadioGroup"] .ant-radio-button-wrapper {
+  height: 34px !important;
+  line-height: 32px !important;
+  padding: 0 16px !important;
+  border: 1px solid var(--md-line) !important;
+  border-radius: 999px !important;
+  background: var(--md-fill) !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--md-ink-2) !important;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+[class*="ModDetailsView__ModVersionRadioGroup"] .ant-radio-button-wrapper::before {
+  display: none !important;
+}
+
+[class*="ModDetailsView__ModVersionRadioGroup"] .ant-radio-button-wrapper:hover {
+  color: var(--md-ink) !important;
+}
+
+html body [class*="ModDetailsView__ModVersionRadioGroup"] .ant-radio-button-wrapper-checked {
+  background: rgba(10, 132, 255, 0.2) !important;
+  border-color: rgba(10, 132, 255, 0.45) !important;
+  color: #6ab6ff !important;
+  box-shadow: none !important;
+}
+
+html body[data-theme="light"] [class*="ModDetailsView__ModVersionRadioGroup"] .ant-radio-button-wrapper-checked {
+  background: rgba(10, 132, 255, 0.14) !important;
+  color: #0a63d6 !important;
+  box-shadow: none !important;
+}
+
+/* ----- Row 2: title (left) + Share and Visit Link (right) ----- */
+html body [class*="ModDetailsHeader__CardTitleFirstLine"] > div:first-child {
+  grid-column: 1 / 3;
+  grid-row: 2;
+  margin: 0 0 8px !important;
+  font-size: var(--md-title) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--md-ink);
+  white-space: normal !important;
+}
+
+html body [class*="ModPageButtons__ModPageButtonsWrapper"] {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: end;
+  display: flex !important;
+  align-items: center;
+  gap: 10px !important;
+  margin: 0 0 8px !important;
+}
+
+html body [class*="ModPageButtons__ModPageButtonsWrapper"] > * {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  height: var(--md-btn-h) !important;
+  min-width: var(--md-btn-h) !important;
+  padding: 0 12px !important;
+  border-radius: 12px !important;
+  background: var(--md-fill) !important;
+  border: 1px solid var(--md-line) !important;
+  color: var(--md-ink) !important;
+  order: 1;
+  cursor: pointer;
+}
+
+/* First element = Visit Link (blue pill) */
+html body [class*="ModPageButtons__ModPageButtonsWrapper"] > :first-child {
+  order: 2;
+  width: auto !important;
+  gap: 8px;
+  padding: 0 20px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(180deg, #3b9cff, var(--md-accent)) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.4);
+}
+
+html body [class*="ModPageButtons__ModPageButtonsWrapper"] > :first-child::before {
+  content: "Visit Link";
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ----- Row 3: mod ID under the title ----- */
+html body [class*="ModDetailsHeader__CardTitleModId"] {
+  display: block !important;
+  grid-column: 1 / -1;
+  grid-row: 3;
+  justify-self: start;
+  margin: 0 0 4px !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  color: var(--md-ink-2) !important;
+  white-space: nowrap;
+}
+
+html body [class*="ModDetailsHeader__CardTitleModId"]::before {
+  content: "ID: ";
+}
+
+/* Legacy ID chip class, kept hidden in case it is still rendered */
+html body [class*="ModDetailsHeader__CardTitleId"] {
+  display: none !important;
+}
+
+/* ----- Row 4: version, author, target ----- */
+html body [class*="ModMetadataLine__MetadataLineWrapper"] {
+  grid-column: 1 / -1 !important;
+  grid-row: 4 !important;
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0 0 10px !important;
+  font-size: 14px !important;
+  color: var(--md-ink-2) !important;
+}
+
+/* ----- Row 5: description, at most 2 lines ----- */
+html body [class*="ModDetailsHeader__CardTitleDescription"] {
+  grid-column: 1 / -1;
+  grid-row: 5;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  overflow: hidden !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+  max-width: 100%;
+  line-height: 1.5 !important;
+  margin: 0 0 18px !important;
+  font-size: 15px !important;
+  color: var(--md-ink-2) !important;
+}
+
+/* ----- Row 6: action buttons (left) + rating pill (right) ----- */
+html body [class*="ModDetailsHeader__CardTitleButtons-"] {
+  grid-column: 1 / 3;
+  grid-row: 6;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin: 0 0 22px !important;
+}
+
+/* Update (blue) + its "..." button */
+html body [data-testid="mod-action-update"] {
+  display: inline-flex !important;
+  gap: 6px;
+}
+
+html body [data-testid="mod-action-update"] .ant-btn {
+  height: var(--md-btn-h) !important;
+  padding: 0 22px !important;
+  border-radius: 999px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  background: linear-gradient(180deg, #3b9cff, var(--md-accent)) !important;
+  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.4) !important;
+}
+
+html body [data-testid="mod-action-update"] .ant-btn.ant-btn-icon-only {
+  width: var(--md-btn-h) !important;
+  padding: 0 !important;
+}
+
+/* Disable, Fork, Remove: translucent gray pills */
+html body [class*="ModDetailsHeader__CardTitleButtons-"] > button.ant-btn:not([data-testid="mod-action-enable"]) {
+  height: var(--md-btn-h) !important;
+  padding: 0 22px !important;
+  border-radius: 999px !important;
+  background: var(--md-fill) !important;
+  border: 1px solid var(--md-line) !important;
+  box-shadow: none !important;
+  color: var(--md-ink) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+[class*="ModDetailsHeader__CardTitleButtons-"] > button.ant-btn:not([data-testid="mod-action-enable"]):hover {
+  background: var(--md-fill-hover) !important;
+}
+
+/* Remove: red (must stay after the gray rule above, equal specificity) */
+html body [class*="ModDetailsHeader__CardTitleButtons-"] > button[data-testid="mod-action-remove"].ant-btn {
+  color: var(--md-danger) !important;
+}
+
+html body [class*="ModDetailsHeader__CardTitleButtons-"] > button[data-testid="mod-action-remove"].ant-btn:hover {
+  background: color-mix(in srgb, var(--md-danger) 14%, transparent) !important;
+}
+
+/* Enable: blue pill, same as Update */
+html body [class*="ModDetailsHeader__CardTitleButtons-"] > button[data-testid="mod-action-enable"] {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  height: var(--md-btn-h) !important;
+  padding: 0 22px !important;
+  border: none !important;
+  border-radius: 999px !important;
+  background: linear-gradient(180deg, #3b9cff, var(--md-accent)) !important;
+  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.4) !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+html body [class*="ModDetailsHeader__CardTitleButtons-"] > button[data-testid="mod-action-enable"]:hover {
+  filter: brightness(1.1);
+}
+
+/* Donate: red-accented pill with a heart icon */
+html body [class*="ModDetailsHeader__CardTitleButtons-"] > a[class*="ModDetailsHeader__DonateButton"] {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: var(--md-btn-h) !important;
+  padding: 0 20px !important;
+  border-radius: 999px !important;
+  background: color-mix(in srgb, var(--md-donate) 14%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--md-donate) 40%, transparent) !important;
+  box-shadow: none !important;
+  color: var(--md-donate-text) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+}
+
+html body [class*="ModDetailsHeader__CardTitleButtons-"] > a[class*="ModDetailsHeader__DonateButton"]:hover {
+  background: color-mix(in srgb, var(--md-donate) 24%, transparent) !important;
+}
+
+html body [class*="ModDetailsHeader__CardTitleButtons-"] > a[class*="ModDetailsHeader__DonateButton"] svg {
+  color: var(--md-donate) !important;
+  fill: currentColor !important;
+}
+
+/* Rating pill */
+html body [class*="ModDetailsHeader__RatingLine"] {
+  grid-column: 3;
+  grid-row: 6;
+  justify-self: end;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  height: var(--md-btn-h);
+  margin: 0 0 22px !important;
+  padding: 0 8px 0 16px !important;
+  border-radius: 999px;
+  background: var(--md-fill);
+  border: 1px solid var(--md-line);
+}
+
+[class*="ModDetailsHeader__RatingLine"] .ant-rate {
+  font-size: 14px !important;
+}
+
+html body [data-testid="mod-details-reviews"] {
+  height: 28px !important;
+  padding: 0 12px !important;
+  border-radius: 999px !important;
+  font-size: 14px !important;
+  color: var(--md-ink-2) !important;
+}
+
+[data-testid="mod-details-reviews"]:hover {
+  background: var(--md-fill) !important;
+  color: var(--md-ink) !important;
+}
+
+/* Mod details page: no card effect */
+#root .ant-card:not(:has([data-testid="mod-card-title"])) {
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+#root .ant-card:not(:has([data-testid="mod-card-title"])):hover {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+/* =====================================================================
+   10. LIGHT THEME (active when Windhawk uses the light theme)
+   ===================================================================== */
+html body[data-theme="light"] {
+  --lt-bg: rgb(238, 238, 242);            /* window background */
+  --lt-ink: rgba(0, 0, 0, 0.88);          /* primary text */
+  --lt-ink-2: rgba(0, 0, 0, 0.6);         /* secondary text */
+  --lt-ink-3: rgba(0, 0, 0, 0.45);        /* tertiary text */
+  --lt-line: rgba(0, 0, 0, 0.09);         /* borders */
+  --lt-fill: rgba(0, 0, 0, 0.045);        /* subtle fill (sidebar, inputs) */
+  --lt-card: rgba(255, 255, 255, 0.78);   /* card background */
+  --lt-card-hover: rgba(255, 255, 255, 0.95);
+  background: var(--lt-bg) !important;
+}
+
+/* Glass: sider, modal, dropdown, popover */
+html body[data-theme="light"] .ant-layout-sider,
+html body[data-theme="light"] .ant-layout-header,
+html body[data-theme="light"] .ant-modal-content,
+html body[data-theme="light"] .ant-drawer-content,
+html body[data-theme="light"] .ant-dropdown-menu,
+html body[data-theme="light"] .ant-popover-inner {
+  background-color: rgba(255, 255, 255, 0.75) !important;
+}
+
+html body[data-theme="light"] .ant-modal-container {
+  background-color: rgba(246, 246, 248, 0.9) !important;
+}
+
+html body[data-theme="light"] .ant-modal-mask {
+  background: rgba(0, 0, 0, 0.25) !important;
+}
+
+html body[data-theme="light"] .ant-drawer-content {
+  border: 1px solid var(--lt-line) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18) !important;
+  background-image: none !important;
+}
+
+/* Content panel */
+html body[data-theme="light"] #root .ant-layout-content {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Input */
+html body[data-theme="light"] .ant-input-affix-wrapper {
+  background: var(--lt-fill) !important;
+  border: 1px solid var(--lt-line) !important;
+}
+
+/* Sidebar */
+html body[data-theme="light"] [data-testid="app-header"] {
+  background: var(--lt-fill) !important;
+  border-right: 1px solid var(--lt-line) !important;
+}
+
+html body[data-theme="light"] [data-testid="app-header"] [class*="AppHeader__HeaderLogo"]:not([class*="HeaderLogoButton"]) {
+  background: var(--lt-fill) !important;
+  border-right: 1px solid var(--lt-line) !important;
+}
+
+html body[data-theme="light"] #wh-sb-toggle2 {
+  color: var(--lt-ink-2);
+}
+
+html body[data-theme="light"] #wh-sb-toggle2:hover {
+  background: var(--lt-fill);
+  color: var(--lt-ink);
+}
+
+html body[data-theme="light"] [class*="AppHeader__HeaderButtonsWrapper"] .ant-btn:not(.ant-btn-primary) {
+  color: var(--lt-ink) !important;
+}
+
+html body[data-theme="light"] [class*="AppHeader__HeaderButtonsWrapper"] .ant-btn:not(.ant-btn-primary) .anticon {
+  color: var(--lt-ink-2) !important;
+}
+
+html body[data-theme="light"] [class*="AppHeader__HeaderButtonsWrapper"] .ant-btn:not(.ant-btn-primary):hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #000 !important;
+}
+
+html body[data-theme="light"] .wh-nav-badge {
+  background: rgba(0, 0, 0, 0.12);
+  color: var(--lt-ink);
+}
+
+html body[data-theme="light"] .ant-btn-primary .wh-nav-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+/* Groups list (dark colors are set inline by the script) */
+html body[data-theme="light"] #wh-groups-nav {
+  border-top: 1px solid var(--lt-line);
+}
+
+html body[data-theme="light"] #wh-groups-nav > div {
+  color: var(--lt-ink-3) !important;
+}
+
+html body[data-theme="light"] #wh-groups-nav > button {
+  color: var(--lt-ink) !important;
+}
+
+html body[data-theme="light"] #wh-groups-nav > button:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+}
+
+html body[data-theme="light"] #wh-groups-nav > button > span:last-child {
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: var(--lt-ink-2) !important;
+}
+
+html body[data-theme="light"] #wh-stats {
+  background: var(--lt-fill);
+  border: 1px solid var(--lt-line);
+  color: var(--lt-ink-2);
+}
+
+html body[data-theme="light"] #wh-stats::before {
+  background: rgba(0, 0, 0, 0.10);
+}
+
+html body[data-theme="light"] #wh-stats .wh-stat-value {
+  color: var(--lt-ink);
+}
+
+html body[data-theme="light"]::after {
+  color: var(--lt-ink-3);
+  background: var(--lt-fill);
+  border-top: 1px solid var(--lt-line);
+  border-right: 1px solid var(--lt-line);
+}
+
+html body[data-theme="light"] #wh-lights.wh-inactive:not(:hover) .wh-light {
+  background: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Installed Mods page title */
+html body[data-theme="light"] [class*="ModsBrowserLocal__ModsContainer"] > [class*="ModsBrowserLocal__SectionHeader"]:not(:has(svg[data-icon="star"])) h2::after {
+  color: var(--lt-ink);
+}
+
+html body[data-theme="light"] [class*="ModsBrowserLocal__ModsContainer"] > [class*="ModsBrowserLocal__SectionHeader"]:not(:has(svg[data-icon="star"]))::after {
+  color: var(--lt-ink-2);
+}
+
+/* Update banner */
+html body[data-theme="light"] .ant-alert-info .ant-btn.ant-btn-primary:not(.ant-btn-background-ghost) {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  color: var(--lt-ink) !important;
+}
+
+html body[data-theme="light"] .ant-alert-info:has(.ant-btn)::after {
+  border-top-color: rgba(0, 0, 0, 0.6);
+  border-right-color: rgba(0, 0, 0, 0.6);
+}
+
+html body[data-theme="light"] #wh-newmod2 {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+/* Mod card */
+html body[data-theme="light"] .ant-card-bordered {
+  background-color: var(--lt-card) !important;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 30%) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid var(--lt-line) !important;
+  border-top-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+html body[data-theme="light"] .ant-card-bordered:hover {
+  background-color: var(--lt-card-hover) !important;
+  border-color: rgba(0, 0, 0, 0.14) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+}
+
+html body[data-theme="light"] .ant-card-bordered:has([data-testid="mod-card-title"])::before {
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 0, 0, 0.06), transparent 70%);
+}
+
+html body[data-theme="light"] [class*="ModCard__ModCardTitle-"] {
+  color: var(--lt-ink) !important;
+}
+
+html body[data-theme="light"] [class*="ModCard"] .ant-typography {
+  color: var(--lt-ink-2) !important;
+}
+
+html body[data-theme="light"] [class*="ModCardActionsContainer"] {
+  border-top: 1px solid var(--lt-line) !important;
+}
+
+html body[data-theme="light"] [class*="ModCardActionsContainer"] .ant-btn {
+  color: var(--lt-ink-2) !important;
+}
+
+html body[data-theme="light"] [class*="ModCardActionsContainer"] .ant-btn:hover {
+  background: rgba(0, 0, 0, 0.07) !important;
+  color: #000 !important;
+}
+
+html body[data-theme="light"] [class*="ModCardActionsContainer"] .ant-badge .ant-badge-dot {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+html body[data-theme="light"] .wh-meta {
+  color: var(--lt-ink-3);
+}
+
+html body[data-theme="light"] .wh-update::before {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+html body[data-theme="light"] .wh-more {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--lt-ink-2);
+}
+
+html body[data-theme="light"] .wh-more:hover {
+  background: rgba(0, 0, 0, 0.12);
+  color: #000;
+}
+
+html body[data-theme="light"] .wh-more-menu {
+  background: rgba(250, 250, 252, 0.97);
+  border: 1px solid var(--lt-line);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+/* Settings and About */
+html body[data-theme="light"] #root [data-testid="settings-page"],
+html body[data-theme="light"] #root [data-testid="about-page"] {
+  --set-bg: rgba(255, 255, 255, 0.65);
+  --set-line: rgba(0, 0, 0, 0.09);
+}
+
+html body[data-theme="light"] #root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div > a {
+  color: var(--lt-ink) !important;
+}
+
+/* Mod details: body text (README, Settings, Changelog, ...) */
+html body[data-theme="light"] .ant-card-body :is(p, .ant-typography):not([data-testid="mod-card-title"], [data-testid="mod-card-title"] *, [class*="ModCard"] *) {
+  color: rgba(0, 0, 0, 0.75) !important;
+}
+
+/* Mod details: tabs */
+html body[data-theme="light"] .ant-tabs-nav-list:has([data-testid^="mod-details-tab-"]) {
+  --tab-bg: rgba(0, 0, 0, 0.06);
+  --tab-active: rgba(255, 255, 255, 0.95);
+  --tab-text: rgba(0, 0, 0, 0.6);
+  --tab-text-active: rgba(0, 0, 0, 0.9);
+}
+
+html body[data-theme="light"] .ant-tabs-tab.ant-tabs-tab-active:has([data-testid^="mod-details-tab-"]) {
+  box-shadow: inset 0 0 0 1px rgba(10, 132, 255, 0.5), 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Scrollbars */
+html body[data-theme="light"] *::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  background-clip: padding-box;
+}
+
+html body[data-theme="light"] *::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.45);
+  background-clip: padding-box;
+}
+
+html body[data-theme="light"] .wh-cscroll-thumb {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.28) !important;
+}
+
+html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
   `;
   // ===== END OF CSS =====
 
@@ -1350,7 +2531,7 @@ html.wh-collapsed #wh-stats {
     if (key === last) return;
     last = key;
     nav.replaceChildren();
-    if (!items.length) return; // empty nav is hidden by CSS (:empty)
+    if (!items.length) return; // an empty nav is hidden by CSS (:empty)
 
     const label = document.createElement('div');
     label.textContent = 'GROUPS';
@@ -1426,6 +2607,101 @@ html.wh-collapsed #wh-stats {
     }
   });
 
+  // ===== Window controls (traffic lights) =====
+  const sendWindow = (type, extra) => {
+    if (typeof window.whWindow !== 'function') return;
+    try {
+      window.whWindow(JSON.stringify(Object.assign({ type }, extra)));
+    } catch (e) {}
+  };
+
+  const LIGHT_ICONS = {
+    close: '<svg viewBox="0 0 12 12"><path d="M3.5 3.5l5 5M8.5 3.5l-5 5"/></svg>',
+    minimize: '<svg viewBox="0 0 12 12"><path d="M3 6h6"/></svg>',
+    maximize: '<svg viewBox="0 0 12 12"><path d="M3 3h4L3 7zM9 9H5l4-4z"/></svg>',
+  };
+
+  const ensureWindowControls = () => {
+    if (!document.body) return;
+    if (document.getElementById('wh-lights')) return;
+
+    // Title bar zone along the top edge: dragging moves the window, a double click toggles maximize
+    const DRAG_H = 44; // zone height in px from the top of the window; raise it if the zone is too small
+    const isDragZone = (e) =>
+      e.button === 0 && e.clientY < DRAG_H &&
+      !e.target.closest('button, input, a, select, textarea, [role="button"], .ant-btn, .ant-input-affix-wrapper, .ant-switch, #wh-lights, #wh-sb-toggle2');
+    let dragPressed = false, dragX = 0, dragY = 0;
+    document.addEventListener('mousemove', (e) => {
+      if (!dragPressed || !(e.buttons & 1)) return;
+      if (Math.abs(e.screenX - dragX) + Math.abs(e.screenY - dragY) > 4) {
+        dragPressed = false;
+        sendWindow('drag');
+      }
+    }, true);
+    document.addEventListener('mouseup', () => { dragPressed = false; }, true);
+    document.addEventListener('dblclick', (e) => {
+      if (isDragZone(e)) sendWindow('maximize');
+    }, true);
+    document.addEventListener('mousedown', (e) => {
+      if (!isDragZone(e)) return;
+      dragPressed = true; dragX = e.screenX; dragY = e.screenY;
+    });
+
+    const lights = document.createElement('div');
+    lights.id = 'wh-lights';
+    [
+      ['close', 'Close'],
+      ['minimize', 'Minimize'],
+      ['maximize', 'Maximize'],
+    ].forEach(([type, label]) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'wh-light wh-light-' + type;
+      b.setAttribute('aria-label', label);
+      b.innerHTML = LIGHT_ICONS[type];
+      b.onclick = () => sendWindow(type);
+      lights.append(b);
+    });
+
+    document.body.append(lights);
+
+    const syncFocus = () => lights.classList.toggle('wh-inactive', !document.hasFocus());
+    window.addEventListener('focus', syncFocus);
+    window.addEventListener('blur', syncFocus);
+    syncFocus();
+
+    // Tell the mod that this skin draws its own title bar
+    const announceTitleBar = () => {
+      if (typeof window.whWindow === 'function') {
+        sendWindow('titlebar', { custom: true });
+      } else {
+        setTimeout(announceTitleBar, 500);
+      }
+    };
+    setTimeout(announceTitleBar, 1000);
+
+    // Invisible resize handles on the top edge and top corners
+    const mkHandle = (edge, css, cursor) => {
+      const el = document.createElement('div');
+      el.style.cssText =
+        'position:fixed;z-index:2147483647;background:transparent;' + css +
+        'cursor:' + cursor + ';';
+
+      el.addEventListener('mousedown', (e) => {
+        if (e.button === 0) {
+          e.preventDefault();
+          sendWindow('resize', { edge });
+        }
+      });
+
+      document.documentElement.appendChild(el);
+    };
+
+    mkHandle('t', 'top:0;left:8px;right:8px;height:4px;', 'ns-resize');
+    mkHandle('tl', 'top:0;left:0;width:8px;height:8px;', 'nwse-resize');
+    mkHandle('tr', 'top:0;right:0;width:8px;height:8px;', 'nesw-resize');
+  };
+
   // ===== Stats, Home badge, tooltips =====
   const stats = { catalog: null, installed: null, enabled: null, updates: 0 };
 
@@ -1455,8 +2731,9 @@ html.wh-collapsed #wh-stats {
       const res = await fetch('https://mods.windhawk.net/catalog.json');
       const data = await res.json();
       const mods = data.mods || data;
-      stats.catalog = Array.isArray(mods) ? mods.length : Object.keys(mods).length;
-      (Array.isArray(mods) ? mods : Object.values(mods)).forEach((m) => {
+      const list = Array.isArray(mods) ? mods : Object.values(mods);
+      stats.catalog = list.length;
+      list.forEach((m) => {
         const md = (m && m.metadata) || m;
         if (md && md.name) {
           catalogByName[String(md.name).trim().toLowerCase()] = { author: md.author };
@@ -1650,9 +2927,121 @@ html.wh-collapsed #wh-stats {
     });
   };
 
+  // ===== Card grid: mark the card list container (derived from native-winui) =====
+  // gridDepth = number of levels between a card and its list container. It is
+  // learned from lists with several cards and reused for lists holding one card.
+  let gridDepth = 1;
+  const markCardGrid = () => {
+    const keep = new Set();
+    // Visible mod cards only (the details page has no mod-card-title)
+    const cards = [...document.querySelectorAll('#root .ant-card')].filter(
+      (c) =>
+        c.querySelector('[data-testid="mod-card-title"]') &&
+        !c.parentElement.closest('.ant-card') &&
+        c.getClientRects().length > 0
+    );
+    // Containers that must never become a grid (section header, tabs, root)
+    const bad = (el) =>
+      !el ||
+      el.id === 'root' ||
+      el === document.body ||
+      el.matches('[class*="ModsBrowserLocal__ModsContainer"]') ||
+      el.querySelector('[data-testid="mod-group-header"], [class*="SectionHeader"], .ant-tabs');
+
+    for (let i = 0; i + 1 < cards.length; i++) {
+      // Nearest common parent of two neighbouring cards = the list container
+      let box = cards[i].parentElement;
+      while (box && !box.contains(cards[i + 1])) box = box.parentElement;
+      if (bad(box)) continue;
+      let n = cards[i], d = 0;
+      while (n && n !== box) { n = n.parentElement; d++; }
+      if (n === box) gridDepth = d;
+      keep.add(box);
+    }
+    // Single-card list: climb gridDepth levels
+    cards.forEach((c) => {
+      let a = c;
+      for (let i = 0; i < gridDepth && a; i++) a = a.parentElement;
+      if (bad(a)) return;
+      keep.add(a);
+    });
+
+    document.querySelectorAll('.wh-card-grid').forEach((el) => {
+      if (!keep.has(el)) el.classList.remove('wh-card-grid');
+    });
+    keep.forEach((el) => el.classList.add('wh-card-grid'));
+  };
+
+  // ===== Settings page title: text taken from the active menu button =====
+  const markSettingsTitle = () => {
+    const page = document.querySelector('[data-testid="settings-page"]');
+    if (!page) return;
+    const active = document.querySelector(
+      '[class*="AppHeader__HeaderButtonsWrapper"] .ant-btn.ant-btn-primary:not([data-testid="create-new-mod"])'
+    );
+    const t = (active && active.title) || 'Settings';
+    if (page.getAttribute('data-wh-title') !== t) page.setAttribute('data-wh-title', t);
+  };
+
+  // ===== About page: wrap the " - ..." description text in a span (so it can be right-aligned) =====
+  const markAboutRows = () => {
+    document
+      .querySelectorAll('[data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div')
+      .forEach((row) => {
+        if (row.dataset.whRow) return;
+        row.dataset.whRow = '1';
+        const a = row.querySelector(':scope > a');
+        if (!a) return;
+        const texts = [...row.childNodes].filter((n) => n.nodeType === 3);
+        const t = texts
+          .map((n) => n.textContent)
+          .join('')
+          .replace(/^\s*[-\u2013\u2014]\s*/, '')
+          .trim();
+        texts.forEach((n) => n.remove());
+        if (t) {
+          const span = document.createElement('span');
+          span.className = 'wh-about-desc';
+          span.textContent = t;
+          a.after(span);
+        }
+      });
+  };
+
+  // ===== About page: copy the sidebar logo above the title =====
+  const markAboutLogo = () => {
+    const sec = document.querySelector(
+      '[data-testid="about-page"] [class*="About__ContentSection"]:first-child'
+    );
+    if (!sec || sec.querySelector('.wh-about-logo')) return;
+    const src = document.querySelector('[class*="AppHeader__HeaderLogoButton"] > :first-child');
+    if (!src) return;
+    const clone = src.cloneNode(true);
+    clone.classList.add('wh-about-logo');
+    sec.prepend(clone);
+  };
+
+  // ===== Sidebar: measure the fixed logo area (used by CSS through --sb-logo-h) =====
+  let logoRO = null;
+  let logoObserved = null;
+  const syncSidebarLogo = () => {
+    const logo = document.querySelector(
+      '[data-testid="app-header"] [class*="AppHeader__HeaderLogo"]:not([class*="HeaderLogoButton"])'
+    );
+    if (!logo || logo === logoObserved) return;
+    logoObserved = logo;
+    if (logoRO) logoRO.disconnect();
+    logoRO = new ResizeObserver(() => {
+      const h = Math.ceil(logo.getBoundingClientRect().height);
+      if (h > 0) document.documentElement.style.setProperty('--sb-logo-h', h + 'px');
+    });
+    logoRO.observe(logo);
+  };
+
   // ===== Main loop =====
   const tick = () => {
     ensureStyle();
+    ensureWindowControls();
     applyCollapsed();
     ensureToggle();
     readStats();
@@ -1662,6 +3051,11 @@ html.wh-collapsed #wh-stats {
     placeNewMod();
     tweakText();
     enhanceCards();
+    markCardGrid();
+    markSettingsTitle();
+    markAboutRows();
+    markAboutLogo();
+    syncSidebarLogo();
   };
 
   // React to DOM changes right away instead of waiting for a timer
