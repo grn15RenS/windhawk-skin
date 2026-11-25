@@ -6,19 +6,11 @@ This theme gives the Windhawk interface a macOS-inspired look: a dark flat sideb
 
 | Dark Mode | Light Mode |
 |-----------|-------------|
-| ![Installed Mods_Dark](https://github.com/user-attachments/assets/3cacca89-fdb3-4126-ba99-f3e55f7ebca1) | ![Installed Mods_Dark](https://github.com/user-attachments/assets/633f6304-e01c-41aa-9b7f-67f589c8c194) | 
-
-<details>
-<summary>More screenshots</summary>
-
-| Section | Screenshot |
-|---------|------------|
-| Explore | ![Explore](https://github.com/user-attachments/assets/75b7322b-c8b0-48af-8997-03eaf5ad3a63) |
-| Mod details | ![Mod details](https://github.com/user-attachments/assets/4df8c1a8-7975-48b5-935c-423ba738ac83) |
-| Settings | ![Settings](https://github.com/user-attachments/assets/f59498e9-99fe-4cde-aa6a-9fe720f8198c) |
-| About | ![About](https://github.com/user-attachments/assets/a7146fa5-fc80-49db-b52d-91d583cb2810) |
-
-</details>
+| ![Installed Mods_Dark](https://github.com/user-attachments/assets/3cacca89-fdb3-4126-ba99-f3e55f7ebca1) | ![Installed Mods_Light](https://github.com/user-attachments/assets/723f0426-2c1e-4435-a86f-46cf6f66e074) | 
+| ![Explore_Dark](https://github.com/user-attachments/assets/2f6f8b3e-66fa-49bf-89f9-a517390e58fb) | ![Explore_Light](https://github.com/user-attachments/assets/09329bd9-9b20-4099-acb0-b3ba4b969a5d) |
+| ![Mod Details_Dark](https://github.com/user-attachments/assets/690be836-bcbd-404e-b203-5c630c08eff1) | ![Mod Details_Light](https://github.com/user-attachments/assets/56fec43d-0e04-461e-8b01-6a961adcbbe9) |
+| ![Settings_Dark](https://github.com/user-attachments/assets/4f55f63f-6d6e-4ad9-809d-0f695f1c0354) | ![Settings_Light](https://github.com/user-attachments/assets/f464347a-2a09-4724-97fc-bce2c493c447) |
+| ![About_Dark](https://github.com/user-attachments/assets/a17d3955-1914-44da-a23e-2090fdad9417) | ![About_Light](https://github.com/user-attachments/assets/e394cb07-5b48-46e1-9e32-a7f3e3e2a35a) |
 
 ## Features
 
