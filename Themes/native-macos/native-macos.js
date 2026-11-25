@@ -1,24 +1,32 @@
+/*
+macOS theme for Windhawk Skin
+
+This theme gives the Windhawk interface a macOS-inspired look: a dark flat
+sidebar with a collapsible menu, traffic light window controls, a card grid
+for installed mods, and System Settings style Settings and About pages. It
+supports both the dark and the light Windhawk color schemes.
+
+Author: [grn15RenS](https://github.com/grn15RenS)
+*/
+
 (() => {
   if (window.__whGroupsInstalled) return;
   window.__whGroupsInstalled = true;
 
-  // ===== CSS: edit freely, then reopen Windhawk =====
   const css = String.raw`
-/* =====================================================================
-   1. BASE: variables, transparency, glass, radii
-   ===================================================================== */
+/* 1. Base: variables, transparency, glass, radii */
 :root {
   --r-xl: 24px;
   --r-lg: 16px;
   --r-md: 12px;
   --r-sm: 8px;
   --header-row-h: 40px;
-  --card-min: 340px;         /* minimum card width; smaller = more columns */
+  --card-min: 340px;
   --font-ui: "Plus Jakarta Sans", "Plus Jakarta Sans Medium", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", sans-serif;
-  --light-size: 14px;        /* traffic light diameter */
-  --light-gap: 9px;          /* gap between traffic lights */
-  --light-icon: 9px;         /* size of the x / - / arrow symbol on hover */
-  --light-center-y: 31px;    /* vertical center = collapse button: top 14px + height 34px / 2 */
+  --light-size: 14px;
+  --light-gap: 9px;
+  --light-icon: 9px;
+  --light-center-y: 31px; /* lines up with the collapse button */
 }
 
 body {
@@ -45,7 +53,6 @@ body {
   -webkit-backdrop-filter: blur(20px) saturate(140%) !important;
 }
 
-/* Large containers: 16px */
 .ant-card,
 .ant-alert,
 .ant-drawer-content,
@@ -67,7 +74,6 @@ body {
   padding: 16px 18px !important;
 }
 
-/* Controls: 12px */
 .ant-btn,
 .ant-input,
 .ant-input-affix-wrapper,
@@ -80,7 +86,6 @@ body {
   border-radius: var(--r-md) !important;
 }
 
-/* Small elements: 8px */
 .ant-tag,
 .ant-badge-count,
 .ant-dropdown-menu-item,
@@ -91,7 +96,6 @@ body {
   border-radius: var(--r-sm) !important;
 }
 
-/* Modal */
 .ant-modal-container,
 .ant-modal-content {
   border-radius: var(--r-xl) !important;
@@ -114,14 +118,12 @@ body {
   background-color: rgba(28, 28, 30, 0.82) !important;
 }
 
-/* Select popup list */
 .ant-select-dropdown {
   border-radius: var(--r-md) !important;
   padding: 4px !important;
   overflow: hidden;
 }
 
-/* Number input */
 .ant-input-number-input-wrap,
 .ant-input-number-input {
   border-radius: var(--r-md) !important;
@@ -131,7 +133,6 @@ body {
   overflow: hidden;
 }
 
-/* Glass look: border, top highlight, shadow */
 .ant-card,
 .ant-modal-container,
 .ant-modal-content,
@@ -147,11 +148,9 @@ body {
   ) !important;
 }
 
-/* =====================================================================
-   2. CONTROLS AND TYPOGRAPHY: switch, buttons, inputs, scrollbar, fonts
-   ===================================================================== */
+/* 2. Controls and typography: switch, buttons, inputs, scrollbar, fonts */
 
-/* Switch: macOS style, blue when on */
+/* macOS-style switch */
 .ant-switch {
   background: rgba(120, 120, 128, 0.32) !important;
   transition: background 0.25s ease !important;
@@ -171,7 +170,6 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35) !important;
 }
 
-/* Primary buttons: flat blue */
 .ant-btn-primary:not(.ant-btn-background-ghost),
 .ant-btn-variant-solid:not(.ant-btn-background-ghost) {
   background-image: none !important;
@@ -203,7 +201,6 @@ body {
   transition: background-color 0.2s ease, border-color 0.2s ease !important;
 }
 
-/* Search bar */
 .ant-input-affix-wrapper {
   background: rgba(255, 255, 255, 0.05) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -225,7 +222,6 @@ body {
   box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25) !important;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -251,7 +247,6 @@ body {
   border-radius: 999px !important;
 }
 
-/* Font */
 body,
 button,
 input,
@@ -266,7 +261,6 @@ textarea,
   -webkit-font-smoothing: antialiased;
 }
 
-/* UI font across the whole app (code blocks excluded) */
 html body #root,
 html body #root :is(button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, span, div, a, label, li, td, th):not(:is(code, pre, kbd, samp) *) {
   font-family: var(--font-ui) !important;
@@ -287,12 +281,10 @@ h1, h2 {
   letter-spacing: -0.02em !important;
 }
 
-/* Letter spacing on pages without mod cards */
 #root:not(:has([data-testid="mod-card-title"])) :is(h1, h2, h3, h4, h5, .ant-typography, .ant-tabs-tab) {
   letter-spacing: 0.02em !important;
 }
 
-/* Mod details header */
 [class*="ModDetailsHeader__CardTitleFirstLine"] > div,
 [class*="ModMetadataLine__MetadataLineWrapper"],
 [class*="ModMetadataLine__MetadataLineWrapper"] .ant-typography {
@@ -306,9 +298,7 @@ h1, h2 {
   box-shadow: none !important;
 }
 
-/* =====================================================================
-   3. LAYOUT: content area, card grid
-   ===================================================================== */
+/* 3. Layout: content area, card grid */
 #root {
   box-sizing: border-box;
   padding-left: 200px !important;
@@ -340,7 +330,6 @@ html.wh-collapsed #root {
   margin-right: 0 !important;
 }
 
-/* Card grid (mod list only) */
 #root div:has(> .ant-card [data-testid="mod-card-title"]) {
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr)) !important;
@@ -369,7 +358,7 @@ html.wh-collapsed #root {
   margin-right: 0 !important;
 }
 
-/* Script-marked grid: lists whose cards are wrapped (e.g. by a ribbon wrapper) */
+/* grid marked by the script (cards wrapped in a ribbon) */
 #root .wh-card-grid {
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr)) !important;
@@ -400,17 +389,15 @@ html.wh-collapsed #root {
   margin: 0 !important;
 }
 
-/* =====================================================================
-   4. SETTINGS PAGE (System Settings style)
-   ===================================================================== */
+/* 4. Settings page (System Settings style) */
 #root [data-testid="settings-page"] {
-  --set-bg: rgba(255, 255, 255, 0.05);    /* group background */
-  --set-line: rgba(255, 255, 255, 0.09);  /* border + hairline between rows */
-  --set-radius: 12px;                     /* group corner radius */
-  --set-gap: 16px;                        /* gap between groups */
+  --set-bg: rgba(255, 255, 255, 0.05);
+  --set-line: rgba(255, 255, 255, 0.09);
+  --set-radius: 12px;
+  --set-gap: 16px;
   width: 100% !important;
-  max-width: 720px !important;            /* content column width */
-  padding: calc(var(--light-center-y) - 13px) 0 32px !important;   /* title aligned with the traffic lights */
+  max-width: 720px !important;
+  padding: calc(var(--light-center-y) - 13px) 0 32px !important;
   box-sizing: border-box !important;
   margin: 0 auto !important;
 }
@@ -422,7 +409,6 @@ html.wh-collapsed #root {
   border: none !important;
 }
 
-/* Each item is a slice of a group */
 #root [data-testid="settings-page"] [class*="Settings__SettingsList"] > [data-key] {
   position: relative;
   padding: 0 !important;
@@ -432,14 +418,14 @@ html.wh-collapsed #root {
   border-right-width: 1px !important;
 }
 
-/* Group start: items 1, 3, 5 */
+/* group start: items 1, 3, 5 */
 #root [data-testid="settings-page"] [class*="Settings__SettingsList"] > [data-key]:is(:nth-child(1), :nth-child(3), :nth-child(5)) {
   border-top-width: 1px !important;
   border-top-left-radius: var(--set-radius);
   border-top-right-radius: var(--set-radius);
 }
 
-/* Group end: items 2, 4, 5 */
+/* group end: items 2, 4, 5 */
 #root [data-testid="settings-page"] [class*="Settings__SettingsList"] > [data-key]:is(:nth-child(2), :nth-child(4), :nth-child(5)) {
   border-bottom-width: 1px !important;
   border-bottom-left-radius: var(--set-radius);
@@ -447,7 +433,6 @@ html.wh-collapsed #root {
   margin-bottom: var(--set-gap) !important;
 }
 
-/* Inset hairline between rows inside a group (items 2 and 4) */
 #root [data-testid="settings-page"] [class*="Settings__SettingsList"] > [data-key]:is(:nth-child(2), :nth-child(4))::before {
   content: "";
   position: absolute;
@@ -458,7 +443,6 @@ html.wh-collapsed #root {
   background: var(--set-line);
 }
 
-/* Row: title on top, control below (suits Export/Import) */
 #root [data-testid="settings-page"] [class*="SettingRow-sc-"] {
   display: flex !important;
   flex-direction: column !important;
@@ -469,7 +453,6 @@ html.wh-collapsed #root {
   box-sizing: border-box !important;
 }
 
-/* Rows with a switch / select / segmented control: control moves to the right */
 #root [data-testid="settings-page"] [class*="SettingRow-sc-"]:has(.ant-switch, .ant-select, .ant-segmented, .ant-radio-group) {
   flex-direction: row !important;
   align-items: center !important;
@@ -499,44 +482,40 @@ html.wh-collapsed #root {
   opacity: 0.65;
 }
 
-/* Page title (text set by the script through data-wh-title) */
 #root [data-testid="settings-page"]::before {
   content: attr(data-wh-title);
   display: block;
   line-height: 22px;
   margin: 0 0 40px;
-  text-align: center;          /* use left for left-aligned */
+  text-align: center;
   font-size: 17px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
-/* =====================================================================
-   5. ABOUT PAGE (macOS style)
-   ===================================================================== */
+/* 5. About page (macOS style) */
 #root [data-testid="about-page"] {
-  --set-bg: rgba(255, 255, 255, 0.05);    /* card background */
-  --set-line: rgba(255, 255, 255, 0.09);  /* border + hairline between rows */
-  --set-radius: 12px;                     /* card corner radius */
-  --about-w: 560px;                       /* column width */
+  --set-bg: rgba(255, 255, 255, 0.05);
+  --set-line: rgba(255, 255, 255, 0.09);
+  --set-radius: 12px;
+  --about-w: 560px;
   width: 100% !important;
   max-width: var(--about-w) !important;
   margin: 0 auto !important;
-  padding: 44px 0 32px !important;        /* page top / bottom spacing */
+  padding: 44px 0 32px !important;
   box-sizing: border-box !important;
 }
 
 #root [data-testid="about-page"] [class*="About__AboutContent"] {
   display: flex !important;
   flex-direction: column !important;
-  gap: 16px !important;                   /* gap between cards */
+  gap: 16px !important;
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
-/* Section 1: name, version, tagline (no card, centered) */
 #root [data-testid="about-page"] [class*="About__ContentSection"]:first-child {
   text-align: center !important;
   margin: 0 0 12px !important;
@@ -557,7 +536,6 @@ html.wh-collapsed #root {
   opacity: 0.7;
 }
 
-/* Sections 2 and 3: inset cards */
 #root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) {
   margin: 0 !important;
   padding: 0 !important;
@@ -568,7 +546,6 @@ html.wh-collapsed #root {
   overflow: hidden;
 }
 
-/* Card title: small caps */
 #root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > h1 {
   margin: 0 !important;
   padding: 14px 16px 10px !important;
@@ -585,7 +562,6 @@ html.wh-collapsed #root {
   padding: 0 16px !important;
 }
 
-/* One row: label left, description + arrow right, hairline on top */
 #root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div {
   position: relative;
   display: flex !important;
@@ -604,7 +580,6 @@ html.wh-collapsed #root {
   opacity: 0.65;
 }
 
-/* Links: white instead of blue, whole row clickable */
 #root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div > a {
   color: rgba(255, 255, 255, 0.92) !important;
   font-weight: 500 !important;
@@ -617,7 +592,6 @@ html.wh-collapsed #root {
   inset: 0;
 }
 
-/* Description (wrapped in a span by the script) */
 #root [data-testid="about-page"] .wh-about-desc {
   margin-left: auto;
   min-width: 0;
@@ -625,7 +599,6 @@ html.wh-collapsed #root {
   opacity: 0.6;
 }
 
-/* Arrow at the right end of rows that contain a link */
 #root [data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div:has(> a)::after {
   content: "";
   width: 11px;
@@ -646,7 +619,6 @@ html.wh-collapsed #root {
   margin-left: auto;
 }
 
-/* Logo above the About title (copied from the sidebar logo by the script) */
 #root [data-testid="about-page"] .wh-about-logo {
   display: block !important;
   width: 72px !important;
@@ -661,11 +633,7 @@ html.wh-collapsed #root {
   height: 100% !important;
 }
 
-/* =====================================================================
-   6. SIDEBAR
-   The logo stays fixed; only the menu down to the stats box scrolls.
-   --sb-logo-h is set by the script (height of the logo area).
-   ===================================================================== */
+/* 6. Sidebar: logo stays fixed, only the menu scrolls. --sb-logo-h is set by the script */
 html body [data-testid="app-header"] {
   position: fixed !important;
   top: var(--sb-logo-h, 140px) !important;
@@ -682,7 +650,7 @@ html body [data-testid="app-header"] {
   justify-content: flex-start !important;
   align-items: stretch !important;
   gap: 10px;
-  padding: 8px 14px 24px !important;   /* 8px top = gap between logo and first menu item */
+  padding: 8px 14px 24px !important;
   background: rgba(255, 255, 255, 0.03) !important;
   border: none !important;
   border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -695,7 +663,6 @@ html body [data-testid="app-header"] {
   transition: width 0.25s ease;
 }
 
-/* Scrollbar: zero-width native bar, single-layer thumb (no transparent border trick) */
 html body [data-testid="app-header"]::-webkit-scrollbar {
   display: block !important;
   width: 0 !important;
@@ -717,7 +684,7 @@ html body [data-testid="app-header"]::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.4) !important;
 }
 
-/* Prevent double scrollbars: only the sidebar itself may scroll */
+/* no double scrollbars */
 html body [data-testid="app-header"] * {
   scrollbar-width: none !important;
 }
@@ -738,7 +705,6 @@ html body [data-testid="app-header"] #wh-stats {
   max-height: none !important;
 }
 
-/* Nothing in the sidebar may shrink, so it scrolls instead */
 [data-testid="app-header"] > * {
   flex: 0 0 auto !important;
   min-height: auto !important;
@@ -746,16 +712,14 @@ html body [data-testid="app-header"] #wh-stats {
   box-sizing: border-box !important;
 }
 
-/* Old built-in footer is off; the fixed footer is body::after below */
 [data-testid="app-header"]::after {
   display: none !important;
 }
 
-/* Toggle button (top right of the sidebar) */
 #wh-sb-toggle2 {
   position: fixed;
   top: 14px;
-  left: 152px; /* 200 - 14 - 34 */
+  left: 152px;
   z-index: 99999;
   width: 34px;
   height: 34px;
@@ -781,7 +745,6 @@ html.wh-collapsed #wh-sb-toggle2 {
   top: 30px;
 }
 
-/* Window controls: macOS traffic lights */
 #wh-lights {
   position: fixed;
   top: calc(var(--light-center-y) - var(--light-size) / 2);
@@ -852,7 +815,6 @@ html.wh-collapsed #wh-lights {
   opacity: 1;
 }
 
-/* Logo: icon on top, text below, centered */
 [class*="AppHeader__HeaderLogo"] {
   width: 100%;
 }
@@ -867,7 +829,7 @@ html body [data-testid="app-header"] [class*="AppHeader__HeaderLogo"]:not([class
   display: flex !important;
   justify-content: center !important;
   z-index: 51 !important;
-  padding: 54px 0 14px !important;   /* 54px = 30px default + 24px of sidebar padding that no longer applies */
+  padding: 54px 0 14px !important; /* 30px default + 24px sidebar padding that no longer applies */
   background: rgba(255, 255, 255, 0.03) !important;
   border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-bottom: none !important;
@@ -875,7 +837,7 @@ html body [data-testid="app-header"] [class*="AppHeader__HeaderLogo"]:not([class
 }
 
 html.wh-collapsed body [data-testid="app-header"] [class*="AppHeader__HeaderLogo"]:not([class*="HeaderLogoButton"]) {
-  padding-top: 64px !important;   /* 40px default + 24px of sidebar padding that no longer applies */
+  padding-top: 64px !important;
   width: 64px !important;
 }
 
@@ -921,7 +883,6 @@ html.wh-collapsed body [data-testid="app-header"] [class*="AppHeader__HeaderLogo
   flex-shrink: 0;
 }
 
-/* Menu */
 [class*="AppHeader__HeaderButtonsWrapper"] {
   display: flex !important;
   flex-direction: column !important;
@@ -961,7 +922,6 @@ html.wh-collapsed body [data-testid="app-header"] [class*="AppHeader__HeaderLogo
   color: #fff !important;
 }
 
-/* Active item: solid blue pill */
 [class*="AppHeader__HeaderButtonsWrapper"] .ant-btn.ant-btn-primary {
   background: #0a84ff !important;
   color: #fff !important;
@@ -971,7 +931,6 @@ html.wh-collapsed body [data-testid="app-header"] [class*="AppHeader__HeaderLogo
   color: #fff !important;
 }
 
-/* Update count badge on Home */
 .wh-nav-badge {
   margin-left: auto;
   min-width: 20px;
@@ -989,7 +948,6 @@ html.wh-collapsed body [data-testid="app-header"] [class*="AppHeader__HeaderLogo
   line-height: 1;
 }
 
-/* Groups list */
 #wh-groups-nav {
   display: flex;
   flex-direction: column;
@@ -1006,7 +964,6 @@ html.wh-collapsed body [data-testid="app-header"] [class*="AppHeader__HeaderLogo
   display: none;
 }
 
-/* Stats box */
 #wh-stats {
   position: relative;
   margin-top: auto;
@@ -1065,7 +1022,7 @@ html.wh-collapsed body [data-testid="app-header"] [class*="AppHeader__HeaderLogo
   font-variant-numeric: tabular-nums;
 }
 
-/* Version footer: fixed at the bottom */
+/* version footer, pinned to the bottom */
 body::after {
   content: "Windhawk v2.0 Alpha 8\A by Ramen Software";
   white-space: pre-line;
@@ -1090,7 +1047,7 @@ body::after {
   transition: width 0.25s ease, opacity 0.15s ease;
 }
 
-/* ----- Collapsed state ----- */
+/* collapsed */
 html.wh-collapsed [data-testid="app-header"] {
   width: 64px !important;
   height: 100vh !important;
@@ -1098,7 +1055,7 @@ html.wh-collapsed [data-testid="app-header"] {
 }
 
 html.wh-collapsed body [data-testid="app-header"]::-webkit-scrollbar {
-  display: none !important;   /* a scrollbar would push the icons in a 64px sidebar */
+  display: none !important;
 }
 
 html.wh-collapsed body::after {
@@ -1164,9 +1121,7 @@ html.wh-collapsed #wh-stats {
   transition: opacity 0.15s ease, visibility 0s linear 0.15s;
 }
 
-/* =====================================================================
-   7. HOME HEADER: title, search row, banner, New Mod, view toggle
-   ===================================================================== */
+/* 7. Home header: title, search row, banner, New Mod, view toggle */
 [class*="ModsBrowserLocal__ModsContainer"] {
   padding-top: 26px !important;
   display: grid !important;
@@ -1182,7 +1137,6 @@ html.wh-collapsed #wh-stats {
   min-width: 0 !important;
 }
 
-/* Title block (Featured header excluded) */
 [class*="ModsBrowserLocal__ModsContainer"] > [class*="ModsBrowserLocal__SectionHeader"]:not(:has(svg[data-icon="star"])) {
   grid-column: 1 !important;
   grid-row: 1 !important;
@@ -1207,7 +1161,6 @@ html.wh-collapsed #wh-stats {
   display: none !important;
 }
 
-/* Original text hidden, replaced by "Installed Mods" */
 [class*="ModsBrowserLocal__ModsContainer"] > [class*="ModsBrowserLocal__SectionHeader"]:not(:has(svg[data-icon="star"])) h2 {
   font-size: 0 !important;
   line-height: 1 !important;
@@ -1233,7 +1186,6 @@ html.wh-collapsed #wh-stats {
   white-space: nowrap;
 }
 
-/* Search + filter + view toggle + New Mod (Explore keeps vertical margins) */
 [class*="SearchFilterContainer"] {
   margin-top: 29px !important;
   margin-bottom: 30px !important;
@@ -1249,7 +1201,6 @@ html.wh-collapsed #wh-stats {
   margin: 0 !important;
 }
 
-/* Update banner */
 .ant-alert-info {
   position: relative !important;
   margin-bottom: 4px !important;
@@ -1289,7 +1240,7 @@ html.wh-collapsed #wh-stats {
   pointer-events: none;
 }
 
-/* New Mod: original hidden, our button lives in the search row */
+/* original New Mod button hidden, replaced by the one in the search row */
 [class*="CreateNewModButton__ButtonContainer"] {
   display: none !important;
 }
@@ -1330,7 +1281,6 @@ html.wh-collapsed #wh-stats {
   line-height: 1;
 }
 
-/* View toggle: segmented control (grid | list) */
 [data-testid="mods-view-toggle"] {
   position: relative !important;
   width: 72px !important;
@@ -1393,9 +1343,7 @@ html.wh-collapsed #wh-stats {
   opacity: 1 !important;
 }
 
-/* =====================================================================
-   8. MOD CARD
-   ===================================================================== */
+/* 8. Mod card */
 .ant-card-bordered {
   position: relative;
   background-color: rgba(26, 26, 28, 0.72) !important;
@@ -1421,7 +1369,6 @@ html.wh-collapsed #wh-stats {
     0 4px 12px rgba(0, 0, 0, 0.30) !important;
 }
 
-/* Cursor spotlight */
 .ant-card-bordered:has([data-testid="mod-card-title"])::before {
   content: "";
   position: absolute;
@@ -1441,19 +1388,17 @@ html.wh-collapsed #wh-stats {
   opacity: 1;
 }
 
-/* Toggle: top right */
 [data-testid="mod-card-switch"] {
   position: absolute !important;
   top: 12px;
   right: 16px;
 }
 
-/* Hide the "edited locally" icon */
 [aria-label="Mod was edited locally"] {
   display: none !important;
 }
 
-/* Description (must come before the title rule: equal specificity, later wins) */
+/* description must come before the title rule (same specificity, later wins) */
 .ant-card-body p,
 .ant-card-body .ant-typography,
 [class*="ModCard"] .ant-typography {
@@ -1462,7 +1407,6 @@ html.wh-collapsed #wh-stats {
   color: rgba(255, 255, 255, 0.65) !important;
 }
 
-/* Title */
 [data-testid="mod-card-title"] .ant-typography {
   max-width: calc(100% - 64px);
 }
@@ -1484,7 +1428,6 @@ html.wh-collapsed #wh-stats {
   letter-spacing: -0.01em !important;
 }
 
-/* ----- Footer: [by author] [update label] ........ Details  ... ----- */
 [class*="ModCardActionsContainer"] {
   display: flex !important;
   align-items: center !important;
@@ -1512,18 +1455,16 @@ html.wh-collapsed #wh-stats {
   color: #ffffff !important;
 }
 
-/* Remove: always hidden, the "..." menu clicks it through script */
+/* Remove is always hidden, the "..." menu clicks it through the script */
 [class*="ModCardActionsContainer"] .ant-btn[data-testid="mod-card-remove"] {
   display: none !important;
 }
 
-/* Details */
 [class*="ModCardActionsContainer"] [data-testid="mod-card-details"] {
   flex: none !important;
   padding: 0 6px 0 10px !important;
 }
 
-/* Details arrow */
 [class*="ModCardActionsContainer"] .ant-btn:not([data-testid="mod-card-remove"])::after {
   content: "";
   display: inline-block;
@@ -1537,7 +1478,6 @@ html.wh-collapsed #wh-stats {
   line-height: 1;
 }
 
-/* Debug-logging dot */
 [class*="ModCardActionsContainer"] .ant-badge {
   position: relative;
   flex: none !important;
@@ -1555,7 +1495,6 @@ html.wh-collapsed #wh-stats {
   transform: none !important;
 }
 
-/* Author text */
 .wh-meta {
   flex: 1 1 auto;
   min-width: 0;
@@ -1571,7 +1510,6 @@ html.wh-collapsed #wh-stats {
   flex: 0 1 auto;
 }
 
-/* "Update available" label */
 .wh-update {
   flex: 1 1 auto;
   min-width: 0;
@@ -1597,7 +1535,6 @@ html.wh-collapsed #wh-stats {
   background: #ffb340;
 }
 
-/* "..." button and its menu */
 .wh-more {
   flex: none;
   display: inline-flex;
@@ -1649,7 +1586,7 @@ html.wh-collapsed #wh-stats {
   background: rgba(255, 69, 58, 0.14);
 }
 
-/* ----- Ribbon (Explore keeps it; Home uses the footer label) ----- */
+/* ribbon: Explore keeps it, Home uses the footer label */
 .ant-ribbon:has(> .ant-ribbon-content:empty) {
   display: none !important;
 }
@@ -1689,25 +1626,20 @@ html.wh-collapsed #wh-stats {
   display: none !important;
 }
 
-/* =====================================================================
-   9. MOD DETAILS PAGE
-   Header grid rows: 1 version pills, 2 title + share/visit, 3 ID,
-                     4 version/author/target, 5 description,
-                     6 action buttons + rating
-   ===================================================================== */
+/* 9. Mod details page */
 :root {
-  --md-fill: rgba(255, 255, 255, 0.08);          /* secondary button background */
+  --md-fill: rgba(255, 255, 255, 0.08);
   --md-fill-hover: rgba(255, 255, 255, 0.14);
-  --md-line: rgba(255, 255, 255, 0.12);          /* thin border */
-  --md-ink: rgba(255, 255, 255, 0.92);           /* primary text */
-  --md-ink-2: rgba(255, 255, 255, 0.6);          /* secondary text */
-  --md-title: 34px;                              /* mod title size */
-  --md-btn-h: 38px;                              /* height of all buttons and pills */
+  --md-line: rgba(255, 255, 255, 0.12);
+  --md-ink: rgba(255, 255, 255, 0.92);
+  --md-ink-2: rgba(255, 255, 255, 0.6);
+  --md-title: 34px;
+  --md-btn-h: 38px;
   --md-accent: #0a84ff;
-  --md-back-top: 8px;                            /* back button offset from the top */
-  --md-donate: #ff453a;                          /* Donate accent (heart) */
-  --md-donate-text: #ff7a72;                     /* Donate text */
-  --md-danger: #ff453a;                          /* Remove button */
+  --md-back-top: 8px;
+  --md-donate: #ff453a;
+  --md-donate-text: #ff7a72;
+  --md-danger: #ff453a;
 }
 
 html body[data-theme="light"] {
@@ -1721,12 +1653,10 @@ html body[data-theme="light"] {
   --md-danger: #d70015;
 }
 
-/* ----- Tabs: segmented control spanning the full width ----- */
 .ant-tabs-nav:has([data-testid^="mod-details-tab-"]) {
   margin: 0 0 20px !important;
 }
 
-/* No long underline or ink bar under the active tab */
 .ant-tabs-nav:has([data-testid^="mod-details-tab-"])::before {
   display: none !important;
 }
@@ -1736,10 +1666,10 @@ html body[data-theme="light"] {
 }
 
 html body .ant-tabs-nav-list:has([data-testid^="mod-details-tab-"]) {
-  --tab-bg: rgba(255, 255, 255, 0.06);         /* container background */
-  --tab-active: rgba(255, 255, 255, 0.16);     /* active tab background */
-  --tab-text: rgba(255, 255, 255, 0.65);       /* normal tab text */
-  --tab-text-active: #fff;                     /* active / hover tab text */
+  --tab-bg: rgba(255, 255, 255, 0.06);
+  --tab-active: rgba(255, 255, 255, 0.16);
+  --tab-text: rgba(255, 255, 255, 0.65);
+  --tab-text-active: #fff;
   box-sizing: border-box !important;
   flex: none !important;
   justify-content: space-between !important;
@@ -1778,7 +1708,6 @@ html body .ant-tabs-tab:has([data-testid^="mod-details-tab-"]) {
   box-shadow: inset 0 0 0 1px rgba(10, 132, 255, 0.5);
 }
 
-/* ----- Header frame: full-width wrappers, content laid out on a 3-column grid ----- */
 html body .ant-card-head-title:has([data-testid="mod-details-back"]) {
   display: block !important;
   flex: 1 1 100% !important;
@@ -1814,7 +1743,7 @@ html body .ant-card-meta-section:has([class*="ModDetailsView__ModVersionRadioGro
   box-sizing: border-box;
 }
 
-/* Flatten the intermediate wrappers so every element becomes a grid item */
+/* flatten the middle wrappers so everything becomes a grid item */
 html body .ant-card-meta-section:has([class*="ModDetailsView__ModVersionRadioGroup"]) > .ant-card-meta-title,
 html body .ant-card-meta-section:has([class*="ModDetailsView__ModVersionRadioGroup"]) > .ant-card-meta-description,
 html body [class*="ModDetailsHeader__CardTitleFirstLine"],
@@ -1822,12 +1751,11 @@ html body .ant-card-meta-section div:has(> [class*="ModMetadataLine__MetadataLin
   display: contents !important;
 }
 
-/* Local mods (no version pills): leave room above for the back button */
+/* local mods have no version pills, leave room for the back button */
 html body [class*="ModDetailsHeader__ModDetailsHeaderWrapper"]:not(:has([class*="ModDetailsView__ModVersionRadioGroup"])) {
   padding-top: calc(var(--md-back-top) + 38px) !important;
 }
 
-/* ----- Row 1: back button (left) + version pills ----- */
 html body [data-testid="mod-details-back"] {
   position: absolute !important;
   top: var(--md-back-top) !important;
@@ -1852,7 +1780,6 @@ html body [data-testid="mod-details-back"] {
   background: var(--md-fill-hover) !important;
 }
 
-/* Built-in arrow icon replaced by a "<" chevron */
 html body [data-testid="mod-details-back"] > * {
   display: none !important;
 }
@@ -1913,7 +1840,6 @@ html body[data-theme="light"] [class*="ModDetailsView__ModVersionRadioGroup"] .a
   box-shadow: none !important;
 }
 
-/* ----- Row 2: title (left) + Share and Visit Link (right) ----- */
 html body [class*="ModDetailsHeader__CardTitleFirstLine"] > div:first-child {
   grid-column: 1 / 3;
   grid-row: 2;
@@ -1951,7 +1877,7 @@ html body [class*="ModPageButtons__ModPageButtonsWrapper"] > * {
   cursor: pointer;
 }
 
-/* First element = Visit Link (blue pill) */
+/* first element = Visit Link */
 html body [class*="ModPageButtons__ModPageButtonsWrapper"] > :first-child {
   order: 2;
   width: auto !important;
@@ -1970,7 +1896,6 @@ html body [class*="ModPageButtons__ModPageButtonsWrapper"] > :first-child::befor
   font-weight: 600;
 }
 
-/* ----- Row 3: mod ID under the title ----- */
 html body [class*="ModDetailsHeader__CardTitleModId"] {
   display: block !important;
   grid-column: 1 / -1;
@@ -1991,12 +1916,11 @@ html body [class*="ModDetailsHeader__CardTitleModId"]::before {
   content: "ID: ";
 }
 
-/* Legacy ID chip class, kept hidden in case it is still rendered */
+/* old class for the ID chip, kept hidden in case it still renders */
 html body [class*="ModDetailsHeader__CardTitleId"] {
   display: none !important;
 }
 
-/* ----- Row 4: version, author, target ----- */
 html body [class*="ModMetadataLine__MetadataLineWrapper"] {
   grid-column: 1 / -1 !important;
   grid-row: 4 !important;
@@ -2008,7 +1932,6 @@ html body [class*="ModMetadataLine__MetadataLineWrapper"] {
   color: var(--md-ink-2) !important;
 }
 
-/* ----- Row 5: description, at most 2 lines ----- */
 html body [class*="ModDetailsHeader__CardTitleDescription"] {
   grid-column: 1 / -1;
   grid-row: 5;
@@ -2025,7 +1948,6 @@ html body [class*="ModDetailsHeader__CardTitleDescription"] {
   color: var(--md-ink-2) !important;
 }
 
-/* ----- Row 6: action buttons (left) + rating pill (right) ----- */
 html body [class*="ModDetailsHeader__CardTitleButtons-"] {
   grid-column: 1 / 3;
   grid-row: 6;
@@ -2035,7 +1957,6 @@ html body [class*="ModDetailsHeader__CardTitleButtons-"] {
   margin: 0 0 22px !important;
 }
 
-/* Update (blue) + its "..." button */
 html body [data-testid="mod-action-update"] {
   display: inline-flex !important;
   gap: 6px;
@@ -2056,7 +1977,6 @@ html body [data-testid="mod-action-update"] .ant-btn.ant-btn-icon-only {
   padding: 0 !important;
 }
 
-/* Disable, Fork, Remove: translucent gray pills */
 html body [class*="ModDetailsHeader__CardTitleButtons-"] > button.ant-btn:not([data-testid="mod-action-enable"]) {
   height: var(--md-btn-h) !important;
   padding: 0 22px !important;
@@ -2073,7 +1993,7 @@ html body [class*="ModDetailsHeader__CardTitleButtons-"] > button.ant-btn:not([d
   background: var(--md-fill-hover) !important;
 }
 
-/* Remove: red (must stay after the gray rule above, equal specificity) */
+/* red Remove, must stay below the gray rule above */
 html body [class*="ModDetailsHeader__CardTitleButtons-"] > button[data-testid="mod-action-remove"].ant-btn {
   color: var(--md-danger) !important;
 }
@@ -2082,7 +2002,6 @@ html body [class*="ModDetailsHeader__CardTitleButtons-"] > button[data-testid="m
   background: color-mix(in srgb, var(--md-danger) 14%, transparent) !important;
 }
 
-/* Enable: blue pill, same as Update */
 html body [class*="ModDetailsHeader__CardTitleButtons-"] > button[data-testid="mod-action-enable"] {
   display: inline-flex !important;
   align-items: center;
@@ -2102,7 +2021,6 @@ html body [class*="ModDetailsHeader__CardTitleButtons-"] > button[data-testid="m
   filter: brightness(1.1);
 }
 
-/* Donate: red-accented pill with a heart icon */
 html body [class*="ModDetailsHeader__CardTitleButtons-"] > a[class*="ModDetailsHeader__DonateButton"] {
   display: inline-flex !important;
   align-items: center;
@@ -2129,7 +2047,6 @@ html body [class*="ModDetailsHeader__CardTitleButtons-"] > a[class*="ModDetailsH
   fill: currentColor !important;
 }
 
-/* Rating pill */
 html body [class*="ModDetailsHeader__RatingLine"] {
   grid-column: 3;
   grid-row: 6;
@@ -2162,7 +2079,7 @@ html body [data-testid="mod-details-reviews"] {
   color: var(--md-ink) !important;
 }
 
-/* Mod details page: no card effect */
+/* details page: no card effect */
 #root .ant-card:not(:has([data-testid="mod-card-title"])) {
   background-color: transparent !important;
   background-image: none !important;
@@ -2180,22 +2097,19 @@ html body [data-testid="mod-details-reviews"] {
   border-color: transparent !important;
 }
 
-/* =====================================================================
-   10. LIGHT THEME (active when Windhawk uses the light theme)
-   ===================================================================== */
+/* 10. Light theme (used when Windhawk is on the light scheme) */
 html body[data-theme="light"] {
-  --lt-bg: rgb(238, 238, 242);            /* window background */
-  --lt-ink: rgba(0, 0, 0, 0.88);          /* primary text */
-  --lt-ink-2: rgba(0, 0, 0, 0.6);         /* secondary text */
-  --lt-ink-3: rgba(0, 0, 0, 0.45);        /* tertiary text */
-  --lt-line: rgba(0, 0, 0, 0.09);         /* borders */
-  --lt-fill: rgba(0, 0, 0, 0.045);        /* subtle fill (sidebar, inputs) */
-  --lt-card: rgba(255, 255, 255, 0.78);   /* card background */
+  --lt-bg: rgb(238, 238, 242);
+  --lt-ink: rgba(0, 0, 0, 0.88);
+  --lt-ink-2: rgba(0, 0, 0, 0.6);
+  --lt-ink-3: rgba(0, 0, 0, 0.45);
+  --lt-line: rgba(0, 0, 0, 0.09);
+  --lt-fill: rgba(0, 0, 0, 0.045);
+  --lt-card: rgba(255, 255, 255, 0.78);
   --lt-card-hover: rgba(255, 255, 255, 0.95);
   background: var(--lt-bg) !important;
 }
 
-/* Glass: sider, modal, dropdown, popover */
 html body[data-theme="light"] .ant-layout-sider,
 html body[data-theme="light"] .ant-layout-header,
 html body[data-theme="light"] .ant-modal-content,
@@ -2219,18 +2133,15 @@ html body[data-theme="light"] .ant-drawer-content {
   background-image: none !important;
 }
 
-/* Content panel */
 html body[data-theme="light"] #root .ant-layout-content {
   background-color: rgba(255, 255, 255, 0.5) !important;
 }
 
-/* Input */
 html body[data-theme="light"] .ant-input-affix-wrapper {
   background: var(--lt-fill) !important;
   border: 1px solid var(--lt-line) !important;
 }
 
-/* Sidebar */
 html body[data-theme="light"] [data-testid="app-header"] {
   background: var(--lt-fill) !important;
   border-right: 1px solid var(--lt-line) !important;
@@ -2273,7 +2184,7 @@ html body[data-theme="light"] .ant-btn-primary .wh-nav-badge {
   color: #fff;
 }
 
-/* Groups list (dark colors are set inline by the script) */
+/* dark colors of the groups list are set inline by the script, hence !important here */
 html body[data-theme="light"] #wh-groups-nav {
   border-top: 1px solid var(--lt-line);
 }
@@ -2321,7 +2232,6 @@ html body[data-theme="light"] #wh-lights.wh-inactive:not(:hover) .wh-light {
   border-color: rgba(0, 0, 0, 0.08);
 }
 
-/* Installed Mods page title */
 html body[data-theme="light"] [class*="ModsBrowserLocal__ModsContainer"] > [class*="ModsBrowserLocal__SectionHeader"]:not(:has(svg[data-icon="star"])) h2::after {
   color: var(--lt-ink);
 }
@@ -2330,7 +2240,6 @@ html body[data-theme="light"] [class*="ModsBrowserLocal__ModsContainer"] > [clas
   color: var(--lt-ink-2);
 }
 
-/* Update banner */
 html body[data-theme="light"] .ant-alert-info .ant-btn.ant-btn-primary:not(.ant-btn-background-ghost) {
   background-color: rgba(0, 0, 0, 0.04) !important;
   color: var(--lt-ink) !important;
@@ -2345,7 +2254,6 @@ html body[data-theme="light"] #wh-newmod2 {
   border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-/* Mod card */
 html body[data-theme="light"] .ant-card-bordered {
   background-color: var(--lt-card) !important;
   background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 30%) !important;
@@ -2413,7 +2321,6 @@ html body[data-theme="light"] .wh-more-menu {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
-/* Settings and About */
 html body[data-theme="light"] #root [data-testid="settings-page"],
 html body[data-theme="light"] #root [data-testid="about-page"] {
   --set-bg: rgba(255, 255, 255, 0.65);
@@ -2424,12 +2331,10 @@ html body[data-theme="light"] #root [data-testid="about-page"] [class*="About__C
   color: var(--lt-ink) !important;
 }
 
-/* Mod details: body text (README, Settings, Changelog, ...) */
 html body[data-theme="light"] .ant-card-body :is(p, .ant-typography):not([data-testid="mod-card-title"], [data-testid="mod-card-title"] *, [class*="ModCard"] *) {
   color: rgba(0, 0, 0, 0.75) !important;
 }
 
-/* Mod details: tabs */
 html body[data-theme="light"] .ant-tabs-nav-list:has([data-testid^="mod-details-tab-"]) {
   --tab-bg: rgba(0, 0, 0, 0.06);
   --tab-active: rgba(255, 255, 255, 0.95);
@@ -2441,7 +2346,6 @@ html body[data-theme="light"] .ant-tabs-tab.ant-tabs-tab-active:has([data-testid
   box-shadow: inset 0 0 0 1px rgba(10, 132, 255, 0.5), 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-/* Scrollbars */
 html body[data-theme="light"] *::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.25);
   background-clip: padding-box;
@@ -2464,7 +2368,6 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
   background: rgba(0, 0, 0, 0.5) !important;
 }
   `;
-  // ===== END OF CSS =====
 
   const ensureStyle = () => {
     if (document.getElementById('wh-custom-css')) return;
@@ -2476,7 +2379,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     parent.append(style);
   };
 
-  // ===== Groups list =====
+  // groups
   const getHeaders = () =>
     [...document.querySelectorAll('[data-testid="mod-group-header"]')];
 
@@ -2491,53 +2394,52 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
   const getCaret = (h) => h.querySelector('[data-testid="mod-group-caret"]');
   const isOpen = (h) => getCaret(h)?.getAttribute('aria-expanded') === 'true';
 
-  const select = (name) => {
+  const selectGroup = (name) => {
     const headers = getHeaders();
     const target = headers.find((h) => getName(h) === name);
     if (!target) return;
 
-    // Close all other open groups
+    // close the other groups
     headers.forEach((h) => {
       if (h !== target && isOpen(h)) getCaret(h).click();
     });
 
-    // Open the selected group
     if (!isOpen(target)) getCaret(target).click();
 
-    // Scroll after the layout has settled
+    // scroll after the layout settles
     setTimeout(() => {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 350);
   };
 
-  let nav = null;
-  let last = null;
+  let groupsNav = null;
+  let lastGroupsKey = null;
 
   const ensureNav = () => {
-    if (nav && nav.isConnected) return true;
+    if (groupsNav && groupsNav.isConnected) return true;
     const host = document.querySelector('[data-testid="app-header"]');
     const menu = host && host.querySelector('[class*="AppHeader__HeaderButtonsWrapper"]');
     if (!menu) return false;
-    nav = document.createElement('div');
-    nav.id = 'wh-groups-nav';
-    menu.after(nav);
-    last = null;
+    groupsNav = document.createElement('div');
+    groupsNav.id = 'wh-groups-nav';
+    menu.after(groupsNav);
+    lastGroupsKey = null;
     return true;
   };
 
-  const render = () => {
+  const renderGroups = () => {
     const items = getHeaders().map((h) => ({ name: getName(h), count: getCount(h) }));
     const key = items.map((i) => i.name + ':' + i.count).join('|');
-    if (key === last) return;
-    last = key;
-    nav.replaceChildren();
-    if (!items.length) return; // an empty nav is hidden by CSS (:empty)
+    if (key === lastGroupsKey) return;
+    lastGroupsKey = key;
+    groupsNav.replaceChildren();
+    if (!items.length) return;
 
     const label = document.createElement('div');
     label.textContent = 'GROUPS';
     label.style.cssText =
       'padding:6px 12px;font-size:11px;font-weight:600;letter-spacing:.08em;color:rgba(255,255,255,.4)';
-    nav.append(label);
+    groupsNav.append(label);
 
     items.forEach(({ name, count }) => {
       const b = document.createElement('button');
@@ -2560,17 +2462,19 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
       b.append(text, badge);
       b.onmouseenter = () => (b.style.background = 'rgba(255,255,255,.08)');
       b.onmouseleave = () => (b.style.background = 'transparent');
-      b.onclick = () => select(name);
-      nav.append(b);
+      b.onclick = () => selectGroup(name);
+      groupsNav.append(b);
     });
   };
 
-  // ===== Collapsible sidebar =====
+  // sidebar collapse
   const STORAGE_KEY = 'wh-sidebar-collapsed';
   let collapsed = false;
   try {
     collapsed = localStorage.getItem(STORAGE_KEY) === '1';
-  } catch (e) {}
+  } catch {
+    // storage can be blocked, start expanded
+  }
 
   const applyCollapsed = () => {
     if (!document.documentElement) return;
@@ -2582,7 +2486,9 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     applyCollapsed();
     try {
       localStorage.setItem(STORAGE_KEY, collapsed ? '1' : '0');
-    } catch (e) {}
+    } catch {
+      // the state just won't persist
+    }
   };
 
   const ensureToggle = () => {
@@ -2607,12 +2513,14 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     }
   });
 
-  // ===== Window controls (traffic lights) =====
+  // traffic lights
   const sendWindow = (type, extra) => {
     if (typeof window.whWindow !== 'function') return;
     try {
       window.whWindow(JSON.stringify(Object.assign({ type }, extra)));
-    } catch (e) {}
+    } catch {
+      // host call failed, nothing useful to do from here
+    }
   };
 
   const LIGHT_ICONS = {
@@ -2625,8 +2533,8 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     if (!document.body) return;
     if (document.getElementById('wh-lights')) return;
 
-    // Title bar zone along the top edge: dragging moves the window, a double click toggles maximize
-    const DRAG_H = 44; // zone height in px from the top of the window; raise it if the zone is too small
+    // drag zone along the top edge, raise DRAG_H if it feels too small
+    const DRAG_H = 44;
     const isDragZone = (e) =>
       e.button === 0 && e.clientY < DRAG_H &&
       !e.target.closest('button, input, a, select, textarea, [role="button"], .ant-btn, .ant-input-affix-wrapper, .ant-switch, #wh-lights, #wh-sb-toggle2');
@@ -2670,7 +2578,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     window.addEventListener('blur', syncFocus);
     syncFocus();
 
-    // Tell the mod that this skin draws its own title bar
+    // tell the mod that this skin draws its own title bar
     const announceTitleBar = () => {
       if (typeof window.whWindow === 'function') {
         sendWindow('titlebar', { custom: true });
@@ -2680,11 +2588,11 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     };
     setTimeout(announceTitleBar, 1000);
 
-    // Invisible resize handles on the top edge and top corners
-    const mkHandle = (edge, css, cursor) => {
+    // invisible resize handles on the top edge and corners
+    const mkHandle = (edge, rules, cursor) => {
       const el = document.createElement('div');
       el.style.cssText =
-        'position:fixed;z-index:2147483647;background:transparent;' + css +
+        'position:fixed;z-index:2147483647;background:transparent;' + rules +
         'cursor:' + cursor + ';';
 
       el.addEventListener('mousedown', (e) => {
@@ -2702,7 +2610,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     mkHandle('tr', 'top:0;right:0;width:8px;height:8px;', 'nesw-resize');
   };
 
-  // ===== Stats, Home badge, tooltips =====
+  // stats + badge
   const stats = { catalog: null, installed: null, enabled: null, updates: 0 };
 
   const isOn = (s) =>
@@ -2711,7 +2619,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
 
   const readStats = () => {
     const switches = document.querySelectorAll('[data-testid="mod-card-switch"]');
-    if (!switches.length) return; // not on Home (or still loading)
+    if (!switches.length) return;
     const q = document.querySelector('.ant-input-affix-wrapper input');
     if (q && q.value) return; // a search is filtering the list
     stats.installed = switches.length;
@@ -2724,7 +2632,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
   let statsEl = null;
   let lastStatsKey = null;
 
-  // Catalog: total count and author lookup by mod name
+  // catalog: total count and author lookup by mod name
   const catalogByName = {};
   const loadCatalog = async (retries = 2) => {
     try {
@@ -2740,20 +2648,24 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
         }
       });
       lastStatsKey = null;
-    } catch (e) {
+      schedule();
+    } catch {
+      // offline or blocked: retry a couple of times, otherwise carry on without catalog data
       if (retries > 0) setTimeout(() => loadCatalog(retries - 1), 15000);
     }
   };
 
-  const ensureBadge = () => {
+  const syncNavButtons = () => {
     const btns = document.querySelectorAll(
       '[class*="AppHeader__HeaderButtonsWrapper"] .ant-btn:not([data-testid="create-new-mod"])'
     );
     btns.forEach((b) => {
-      const c = b.cloneNode(true);
-      c.querySelectorAll('.wh-nav-badge').forEach((n) => n.remove());
-      const label = c.textContent.trim();
-      if (label && b.title !== label) b.title = label; // tooltip when collapsed
+      const label = [...b.childNodes]
+        .filter((n) => !(n.classList && n.classList.contains('wh-nav-badge')))
+        .map((n) => n.textContent)
+        .join('')
+        .trim();
+      if (label && b.title !== label) b.title = label; // tooltip when the sidebar is collapsed
       if (label !== 'Home') return;
       let badge = b.querySelector('.wh-nav-badge');
       if (stats.updates > 0) {
@@ -2805,32 +2717,31 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     );
   };
 
-  // ===== New Mod button inside the search row =====
+  // New Mod button in the search row
   const placeNewMod = () => {
-    const sf = document.querySelector('[class*="SearchFilterContainer"]');
-    const old = document.querySelector('[data-testid="create-new-mod"]');
-    let mine = document.getElementById('wh-newmod2');
+    const searchRow = document.querySelector('[class*="SearchFilterContainer"]');
+    const original = document.querySelector('[data-testid="create-new-mod"]');
+    let button = document.getElementById('wh-newmod2');
 
-    // pages without a search bar: no button
-    if (!sf || !old) {
-      if (mine) mine.remove();
+    if (!searchRow || !original) {
+      if (button) button.remove();
       return;
     }
-    if (mine && mine.parentNode === sf) return;
+    if (button && button.parentNode === searchRow) return;
 
-    if (!mine) {
-      mine = document.createElement('button');
-      mine.id = 'wh-newmod2';
-      mine.type = 'button';
-      mine.innerHTML = '<span class="wh-nm-plus">+</span><span>New Mod</span>';
-      mine.onclick = () => {
+    if (!button) {
+      button = document.createElement('button');
+      button.id = 'wh-newmod2';
+      button.type = 'button';
+      button.innerHTML = '<span class="wh-nm-plus">+</span><span>New Mod</span>';
+      button.onclick = () => {
         document.querySelector('[data-testid="create-new-mod"]')?.click();
       };
     }
-    sf.append(mine);
+    searchRow.append(button);
   };
 
-  const tweakText = () => {
+  const fixSearchPlaceholder = () => {
     document.querySelectorAll('.ant-input-affix-wrapper input').forEach((inp) => {
       if (/^Search for mods/i.test(inp.placeholder) && inp.placeholder !== 'Search for mods...') {
         inp.placeholder = 'Search for mods...';
@@ -2838,7 +2749,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     });
   };
 
-  // ===== Mod card footer: author, update label, "..." menu =====
+  // card footer: author, update label, "..." menu
   let menuEl = null;
   const closeMenu = () => {
     if (menuEl) {
@@ -2879,7 +2790,6 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
       const card = box.closest('.ant-card');
       if (!card) return;
 
-      // "by author" text
       const title =
         card.querySelector('[data-testid="mod-card-title"]')?.textContent.trim() || '';
       let meta = box.querySelector('.wh-meta');
@@ -2892,7 +2802,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
       const text = info && info.author ? 'by ' + info.author : 'Local mod';
       if (meta.textContent !== text) meta.textContent = text;
 
-      // "Update available" label, read from the original ribbon
+      // update label is read from the original ribbon
       const wrap = card.closest('.ant-ribbon-wrapper');
       const ribbonText =
         wrap?.querySelector(':scope > .ant-ribbon .ant-ribbon-content')?.textContent.trim() || '';
@@ -2910,7 +2820,6 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
         upd.remove();
       }
 
-      // "..." button
       if (!box.querySelector('.wh-more')) {
         const more = document.createElement('button');
         more.type = 'button';
@@ -2927,29 +2836,35 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     });
   };
 
-  // ===== Card grid: mark the card list container (derived from native-winui) =====
-  // gridDepth = number of levels between a card and its list container. It is
-  // learned from lists with several cards and reused for lists holding one card.
+  // mark the card grid container (derived from native-winui)
+  // gridDepth = levels between a card and its list container, learned from lists with >1 card
   let gridDepth = 1;
   const markCardGrid = () => {
     const keep = new Set();
-    // Visible mod cards only (the details page has no mod-card-title)
     const cards = [...document.querySelectorAll('#root .ant-card')].filter(
       (c) =>
         c.querySelector('[data-testid="mod-card-title"]') &&
         !c.parentElement.closest('.ant-card') &&
         c.getClientRects().length > 0
     );
-    // Containers that must never become a grid (section header, tabs, root)
-    const bad = (el) =>
-      !el ||
-      el.id === 'root' ||
-      el === document.body ||
-      el.matches('[class*="ModsBrowserLocal__ModsContainer"]') ||
-      el.querySelector('[data-testid="mod-group-header"], [class*="SectionHeader"], .ant-tabs');
+    // containers that must never become a grid; every neighbouring pair reaches the
+    // same container, so remember the verdict (the querySelector scans its whole subtree)
+    const verdicts = new Map();
+    const bad = (el) => {
+      if (!el) return true;
+      if (!verdicts.has(el)) {
+        verdicts.set(
+          el,
+          el.id === 'root' ||
+            el === document.body ||
+            el.matches('[class*="ModsBrowserLocal__ModsContainer"]') ||
+            !!el.querySelector('[data-testid="mod-group-header"], [class*="SectionHeader"], .ant-tabs')
+        );
+      }
+      return verdicts.get(el);
+    };
 
     for (let i = 0; i + 1 < cards.length; i++) {
-      // Nearest common parent of two neighbouring cards = the list container
       let box = cards[i].parentElement;
       while (box && !box.contains(cards[i + 1])) box = box.parentElement;
       if (bad(box)) continue;
@@ -2958,7 +2873,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
       if (n === box) gridDepth = d;
       keep.add(box);
     }
-    // Single-card list: climb gridDepth levels
+    // single-card list: climb gridDepth levels
     cards.forEach((c) => {
       let a = c;
       for (let i = 0; i < gridDepth && a; i++) a = a.parentElement;
@@ -2972,7 +2887,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     keep.forEach((el) => el.classList.add('wh-card-grid'));
   };
 
-  // ===== Settings page title: text taken from the active menu button =====
+  // settings title taken from the active menu button
   const markSettingsTitle = () => {
     const page = document.querySelector('[data-testid="settings-page"]');
     if (!page) return;
@@ -2983,7 +2898,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     if (page.getAttribute('data-wh-title') !== t) page.setAttribute('data-wh-title', t);
   };
 
-  // ===== About page: wrap the " - ..." description text in a span (so it can be right-aligned) =====
+  // about: wrap the " - ..." text in a span so it can be right-aligned
   const markAboutRows = () => {
     document
       .querySelectorAll('[data-testid="about-page"] [class*="About__ContentSection"]:not(:first-child) > div > div')
@@ -3008,7 +2923,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
       });
   };
 
-  // ===== About page: copy the sidebar logo above the title =====
+  // about: copy the sidebar logo above the title
   const markAboutLogo = () => {
     const sec = document.querySelector(
       '[data-testid="about-page"] [class*="About__ContentSection"]:first-child'
@@ -3021,7 +2936,7 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     sec.prepend(clone);
   };
 
-  // ===== Sidebar: measure the fixed logo area (used by CSS through --sb-logo-h) =====
+  // measure the logo area height for --sb-logo-h
   let logoRO = null;
   let logoObserved = null;
   const syncSidebarLogo = () => {
@@ -3038,18 +2953,17 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     logoRO.observe(logo);
   };
 
-  // ===== Main loop =====
   const tick = () => {
     ensureStyle();
     ensureWindowControls();
     applyCollapsed();
     ensureToggle();
     readStats();
-    ensureBadge();
-    if (ensureNav()) render();
+    syncNavButtons();
+    if (ensureNav()) renderGroups();
     ensureStats();
     placeNewMod();
-    tweakText();
+    fixSearchPlaceholder();
     enhanceCards();
     markCardGrid();
     markSettingsTitle();
@@ -3058,7 +2972,6 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     syncSidebarLogo();
   };
 
-  // React to DOM changes right away instead of waiting for a timer
   let scheduled = false;
   const schedule = () => {
     if (scheduled) return;
@@ -3074,15 +2987,28 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
     characterData: true,
   });
 
-  // Card spotlight follows the cursor
+  // card spotlight follows the cursor; mouse events can outpace the frame rate,
+  // so the layout read and style write happen once per frame
+  let spotCard = null;
+  let spotX = 0;
+  let spotY = 0;
+  let spotQueued = false;
   document.addEventListener(
     'mousemove',
     (e) => {
       const card = e.target.closest && e.target.closest('.ant-card-bordered');
       if (!card) return;
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', e.clientX - r.left + 'px');
-      card.style.setProperty('--my', e.clientY - r.top + 'px');
+      spotCard = card;
+      spotX = e.clientX;
+      spotY = e.clientY;
+      if (spotQueued) return;
+      spotQueued = true;
+      requestAnimationFrame(() => {
+        spotQueued = false;
+        const r = spotCard.getBoundingClientRect();
+        spotCard.style.setProperty('--mx', spotX - r.left + 'px');
+        spotCard.style.setProperty('--my', spotY - r.top + 'px');
+      });
     },
     { passive: true }
   );
@@ -3091,7 +3017,9 @@ html body[data-theme="light"] [data-testid="app-header"]::-webkit-scrollbar-thum
 
   loadCatalog();
 
-  // Safety net in case a change is missed
-  setInterval(tick, 2000);
+  // the observer above ignores attribute changes (a mod switch being toggled, for example),
+  // so poll as well; going through schedule() merges this with observer-triggered runs
+  // and holds it back while the window is hidden
+  setInterval(schedule, 2000);
   tick();
 })();
