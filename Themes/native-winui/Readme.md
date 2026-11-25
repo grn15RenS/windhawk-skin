@@ -6,19 +6,11 @@ This theme gives the Windhawk interface a Windows 11 look in the WinUI 3 style: 
 
 | Dark Mode | Light Mode |
 |-----------|-------------|
-| ![Installed Mods_Dark](https://github.com/user-attachments/assets/REPLACE-ME) | ![Installed Mods_Light](https://github.com/user-attachments/assets/REPLACE-ME) |
+| ![Installed Mods_Dark](https://github.com/user-attachments/assets/791c4867-7d6c-44cb-9a96-26598993b21d) | ![Installed Mods_Light](https://github.com/user-attachments/assets/f3052832-81c9-46aa-a982-f497f3dfb879) |
 
-<details>
-<summary>More screenshots</summary>
-
-| Section | Screenshot |
-|---------|------------|
-| Explore | ![Explore](https://github.com/user-attachments/assets/REPLACE-ME) |
-| Mod details | ![Mod details](https://github.com/user-attachments/assets/REPLACE-ME) |
-| Settings | ![Settings](https://github.com/user-attachments/assets/REPLACE-ME) |
-| About | ![About](https://github.com/user-attachments/assets/REPLACE-ME) |
-
-</details>
+| Mica | Acrylic | Mica Alt |
+|-----|-------|----------|
+| ![Mica](https://github.com/user-attachments/assets/0b531b47-f07d-49f8-87d0-81a583809c96) | ![Acrylic](https://github.com/user-attachments/assets/70666648-3a46-497d-9f92-f27afc120e7b) | ![MicaAlt](https://github.com/user-attachments/assets/42a02c40-ceda-4a3e-b6aa-c45ab988a5e3) |
 
 ## Features
 
@@ -37,7 +29,7 @@ This theme gives the Windhawk interface a Windows 11 look in the WinUI 3 style: 
 > Requires the Windhawk Skin mod with **Remove native title bar** turned on, so the native title bar is replaced by the caption buttons of the theme. This option needs Windows 11 22H2 (build 22621) or newer. Without it, you will see both the native title bar and the caption buttons.
 
 > [!NOTE]
-> The surfaces of this theme are transparent, so the **Window backdrop** setting (Mica, Acrylic, Mica Alt) is visible through the sidebar, cards, and toolbar. With no backdrop, the window shows a plain tinted background.
+> The surfaces of this theme are transparent, so the **Window backdrop** setting (Mica, Acrylic, Mica Alt) shows through the sidebar, cards, and toolbar. The backdrop effect is only visible in dark mode, so set **Theme** to Dark in the Windhawk settings to see it. With no backdrop, the window shows a plain tinted background.
 
 > [!NOTE]
 > The theme follows the Windhawk color scheme, so it also works in light mode. To switch, open **Settings** in Windhawk and set **Theme** to Dark, Light, or System.
