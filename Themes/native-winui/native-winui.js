@@ -1,32 +1,23 @@
 /*
- * Windhawk UI theme: Windows 11 / WinUI 3 style, with Mica/Acrylic support.
- *
- * Works together with the "Windhawk UI Script Injector" mod.
- *
- * Window API for theme authors (provided by the mod as window.whWindow):
- *   window.whWindow(JSON.stringify({ type: 'titlebar', custom: true }))
- *       Tell the mod this theme draws its own title bar. Only then is the
- *       native title bar removed (when the mod setting allows it).
- *   window.whWindow(JSON.stringify({ type: 'drag' }))      start moving the window
- *   window.whWindow(JSON.stringify({ type: 'minimize' }))
- *   window.whWindow(JSON.stringify({ type: 'maximize' }))  toggles maximize/restore
- *   window.whWindow(JSON.stringify({ type: 'close' }))
- * Always call it as window.whWindow?.(...) so the theme also runs without the mod.
- */
+Windows 11 theme for Windhawk Skin
+
+This theme gives the Windhawk interface a Windows 11 look in the WinUI 3
+style: transparent surfaces so the Mica or Acrylic backdrop shows through, a
+collapsible NavigationView sidebar with a groups list, Fluent caption buttons,
+a toolbar with search and a New Mod button, install statistics, and a card grid
+for installed mods. It supports both the dark and the light Windhawk color
+schemes.
+
+Author: [grn15RenS](https://github.com/grn15RenS)
+*/
 (() => {
   if (window.__whWin11Installed) return;
   window.__whWin11Installed = true;
 
-  // ===================================================================
-  // CSS
-  // ===================================================================
   const css = String.raw`
-/* ---------------------------------------------------------------------
-   1. Variables
-   --------------------------------------------------------------------- */
+/* Variables */
 :root {
   /* Surfaces (transparent so the window backdrop shows through) */
-  --bg-app:            transparent;
   --bg-sidebar:        transparent;
   --bg-card:           rgba(255, 255, 255, 0.0512);
   --bg-card-hover:     rgba(255, 255, 255, 0.0837);
@@ -65,10 +56,7 @@
   color-scheme: normal !important;
 }
 
-/* ---------------------------------------------------------------------
-   2. Base: backgrounds, font, flat surfaces
-   --------------------------------------------------------------------- */
-html,
+/* Base: backgrounds, font, flat surfaces */
 body,
 #root {
   background: transparent !important;
@@ -176,9 +164,7 @@ h1, h2, h3,
   background: var(--bg-control-hover) !important;
 }
 
-/* ---------------------------------------------------------------------
-   3. Buttons
-   --------------------------------------------------------------------- */
+/* Buttons */
 .ant-btn {
   border-radius: var(--r-ctrl) !important;
   box-shadow: none !important;
@@ -202,7 +188,6 @@ h1, h2, h3,
   color: var(--text-2) !important;
 }
 
-/* Primary */
 .ant-btn-primary:not(.ant-btn-background-ghost),
 .ant-btn-variant-solid:not(.ant-btn-background-ghost):not(.ant-btn-dangerous) {
   background-image: none !important;
@@ -218,6 +203,24 @@ h1, h2, h3,
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
+/* Disabled buttons keep a muted look */
+.ant-btn-primary:not(.ant-btn-background-ghost):disabled,
+.ant-btn-primary:not(.ant-btn-background-ghost):disabled:hover,
+.ant-btn-variant-solid:not(.ant-btn-background-ghost):not(.ant-btn-dangerous):disabled {
+  background-color: var(--bg-control-active) !important;
+  border-color: var(--stroke) !important;
+  color: var(--text-3) !important;
+  cursor: not-allowed !important;
+}
+.ant-btn-default:not(.ant-btn-primary):not(.ant-btn-dangerous):disabled,
+.ant-btn-default:not(.ant-btn-primary):not(.ant-btn-dangerous):disabled:hover,
+.ant-btn-variant-outlined:not(.ant-btn-dangerous):disabled {
+  background: var(--bg-control-active) !important;
+  border-color: var(--stroke) !important;
+  color: var(--text-3) !important;
+  cursor: not-allowed !important;
+}
+
 /* Text / icon-only buttons */
 .ant-btn-text,
 .ant-btn-link,
@@ -230,9 +233,7 @@ h1, h2, h3,
   background: var(--bg-control-hover) !important;
 }
 
-/* ---------------------------------------------------------------------
-   4. Inputs
-   --------------------------------------------------------------------- */
+/* Inputs */
 .ant-input,
 .ant-input-affix-wrapper,
 .ant-input-number,
@@ -267,9 +268,7 @@ h1, h2, h3,
   box-shadow: none !important;
 }
 
-/* ---------------------------------------------------------------------
-   5. Toggle switch (WinUI ToggleSwitch, 40x20 with a 12px knob)
-   --------------------------------------------------------------------- */
+/* Toggle switch (WinUI ToggleSwitch, 40x20 with a 12px knob) */
 .ant-switch {
   min-width: 40px !important;
   height: 20px !important;
@@ -303,9 +302,7 @@ h1, h2, h3,
   background: #ffffff !important;
 }
 
-/* ---------------------------------------------------------------------
-   6. Scrollbars (thin, grow on hover)
-   --------------------------------------------------------------------- */
+/* Scrollbars (thin, grow on hover) */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
@@ -351,9 +348,7 @@ html body .wh-cscroll-thumb.wh-cscroll-v:hover {
 html body .wh-cscroll-track.wh-cscroll-h,
 html body .wh-cscroll-thumb.wh-cscroll-h { display: none !important; }
 
-/* ---------------------------------------------------------------------
-   7. Page layout: the content makes room for the sidebar and title bar
-   --------------------------------------------------------------------- */
+/* Page layout: the content makes room for the sidebar and title bar */
 #root {
   box-sizing: border-box;
   padding-left: var(--sb-w) !important;
@@ -372,9 +367,7 @@ html.wh-has-bar { scroll-padding-top: calc(var(--tb-h) + 16px) !important; }
   margin-right: auto !important;
 }
 
-/* ---------------------------------------------------------------------
-   8. Title bar: transparent drag area + caption buttons (added by JS)
-   --------------------------------------------------------------------- */
+/* Title bar: transparent drag area + caption buttons (added by JS) */
 #wh-tb {
   position: fixed;
   top: 0;
@@ -406,9 +399,7 @@ html.wh-has-bar { scroll-padding-top: calc(var(--tb-h) + 16px) !important; }
 #wh-tb button.wh-close:active { background: #b22a1b; color: rgba(255, 255, 255, 0.7); }
 #wh-tb.wh-inactive button { color: rgba(255, 255, 255, 0.4); }
 
-/* ---------------------------------------------------------------------
-   9. Sidebar (WinUI NavigationView style)
-   --------------------------------------------------------------------- */
+/* Sidebar (WinUI NavigationView style) */
 [data-testid="app-header"] {
   position: fixed !important;
   top: 0 !important;
@@ -677,7 +668,6 @@ html.wh-collapsed #wh-sb-toggle {
   background: #5aa2ff;
 }
 
-/* Groups chevron */
 .wh-gh .wh-chev {
   display: flex;
   transition: transform 0.15s ease;
@@ -688,7 +678,6 @@ html.wh-collapsed #wh-sb-toggle {
 #wh-groups-nav.wh-closed .wh-chev { transform: rotate(180deg); }
 #wh-groups-nav.wh-closed .wh-gi { display: none; }
 
-/* Count badge (pill) */
 .wh-count {
   min-width: 22px;
   height: 20px;
@@ -722,10 +711,7 @@ html.wh-collapsed [data-testid="app-header"] [class*="AppHeader__HeaderButtonsWr
 }
 html.wh-collapsed .wh-about::after { display: none !important; }
 
-/* ---------------------------------------------------------------------
-   10. Toolbar (search, filter, list/sort, New Mod). It lives in the title
-       bar row; the right side never goes under the caption buttons.
-   --------------------------------------------------------------------- */
+/* Toolbar (search, filter, list/sort, New Mod) */
 .wh-toolbar {
   display: flex !important;
   flex-wrap: nowrap !important;
@@ -833,9 +819,7 @@ html.wh-collapsed .wh-toolbar {
 #wh-newmod:hover { background: var(--accent-hover); }
 #wh-newmod:active { background: var(--accent-active); color: rgba(255, 255, 255, 0.8); }
 
-/* ---------------------------------------------------------------------
-   11. Page title + stats
-   --------------------------------------------------------------------- */
+/* Page title + stats */
 .wh-page-title {
   margin: -2px 0 16px !important;
   display: flex !important;
@@ -874,9 +858,7 @@ html.wh-collapsed .wh-toolbar {
 .wh-stat-tx b { font-size: 14px; font-weight: 600; color: var(--text); }
 .wh-stat-tx span { font-size: 12px; font-weight: 400; color: var(--text-3); }
 
-/* ---------------------------------------------------------------------
-   12. Mod cards and card grid
-   --------------------------------------------------------------------- */
+/* Mod cards and card grid */
 /* 15px semibold title, 12px secondary description */
 .wh-card-title {
   font-size: 15px !important;
@@ -922,9 +904,7 @@ html.wh-collapsed .wh-toolbar {
 .wh-header-flow .wh-toolbar { margin-bottom: 16px !important; }
 .wh-header-flow .ant-alert { margin: 0 0 16px !important; }
 
-/* ---------------------------------------------------------------------
-   13. Details page: surfaces that were opaque
-   --------------------------------------------------------------------- */
+/* Details page: surfaces that were opaque */
 /* Select box (Theme dropdown). The popup list stays opaque on purpose. */
 html body .ant-select,
 html body .ant-select-outlined,
@@ -977,12 +957,9 @@ html body .ant-radio-button-wrapper::before {
   background-color: var(--stroke) !important;
 }
 
-/* ---------------------------------------------------------------------
-   14. Light mode (only when the system theme is light)
-   --------------------------------------------------------------------- */
+/* Light mode (only when the system theme is light) */
 @media (prefers-color-scheme: light) {
   :root {
-    --bg-app:            transparent;
     --bg-sidebar:        transparent;
     --bg-card:           rgba(255, 255, 255, 0.7);
     --bg-card-hover:     rgba(249, 249, 249, 0.5);
@@ -1049,6 +1026,14 @@ html body .ant-radio-button-wrapper::before {
     background: var(--accent);
   }
 
+  /* Caption buttons: dark glyphs and dark hover fills on a light window */
+  :root #wh-tb button { color: rgba(0, 0, 0, 0.9); }
+  :root #wh-tb button:hover { background: rgba(0, 0, 0, 0.0373); }
+  :root #wh-tb button:active { background: rgba(0, 0, 0, 0.0241); color: rgba(0, 0, 0, 0.6); }
+  :root #wh-tb button.wh-close:hover { background: #c42b1c; color: #ffffff; }
+  :root #wh-tb button.wh-close:active { background: #b22a1b; color: rgba(255, 255, 255, 0.7); }
+  :root #wh-tb.wh-inactive button { color: rgba(0, 0, 0, 0.4); }
+
   /* Selected group + count badges in the sidebar */
   :root .wh-gi.wh-gi-active { background: rgba(0, 0, 0, 0.0373); }
   :root .wh-gi.wh-gi-active::before { background: var(--accent); }
@@ -1066,16 +1051,26 @@ html body .ant-radio-button-wrapper::before {
     parent.append(style);
   };
 
-  // ===================================================================
-  // Sidebar
-  // ===================================================================
+  // localStorage can throw, so all access goes through here
+  const storage = {
+    get(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    },
+    set(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch {}
+    },
+  };
 
-  // --- Collapse state (saved in localStorage when available) ---
+  // Sidebar
+
   const SB_KEY = 'wh-sidebar-collapsed';
-  let collapsed = false;
-  try {
-    collapsed = localStorage.getItem(SB_KEY) === '1';
-  } catch (e) {}
+  let collapsed = storage.get(SB_KEY) === '1';
 
   const applyCollapsed = () => {
     if (document.documentElement) {
@@ -1086,9 +1081,7 @@ html body .ant-radio-button-wrapper::before {
   const toggleSidebar = () => {
     collapsed = !collapsed;
     applyCollapsed();
-    try {
-      localStorage.setItem(SB_KEY, collapsed ? '1' : '0');
-    } catch (e) {}
+    storage.set(SB_KEY, collapsed ? '1' : '0');
   };
 
   document.addEventListener('keydown', (e) => {
@@ -1098,8 +1091,6 @@ html body .ant-radio-button-wrapper::before {
     }
   });
 
-  // --- Helpers ---
-  const getHost = () => document.querySelector('[data-testid="app-header"]');
   const getMenu = () =>
     document.querySelector('[class*="AppHeader__HeaderButtonsWrapper"]');
   const getLogo = () =>
@@ -1107,9 +1098,8 @@ html body .ant-radio-button-wrapper::before {
       '[data-testid="app-header"] [class*="AppHeader__HeaderLogo"]:not([class*="HeaderLogoButton"])'
     );
 
-  // --- Hamburger button (the glyph comes from CSS) ---
   const ensureHamburger = () => {
-    const host = getHost();
+    const host = document.querySelector('[data-testid="app-header"]');
     if (!host || !getMenu()) return;
     if (document.getElementById('wh-sb-toggle')) return;
     const btn = document.createElement('button');
@@ -1123,7 +1113,6 @@ html body .ant-radio-button-wrapper::before {
     else host.prepend(btn);
   };
 
-  // --- Menu: tooltips, data-wh key and Fluent glyph span ---
   const decorateMenu = () => {
     document
       .querySelectorAll('[class*="AppHeader__HeaderButtonsWrapper"] .ant-btn')
@@ -1142,7 +1131,7 @@ html body .ant-radio-button-wrapper::before {
       });
   };
 
-  // --- Move Settings and About to the bottom of the sidebar ---
+  // Settings and About sit at the bottom of the sidebar
   const markBottomItems = () => {
     const wrap = getMenu();
     if (!wrap) return;
@@ -1158,7 +1147,6 @@ html body .ant-radio-button-wrapper::before {
     });
   };
 
-  // --- Groups list ---
   const getHeaders = () =>
     [...document.querySelectorAll('[data-testid="mod-group-header"]')];
 
@@ -1185,7 +1173,7 @@ html body .ant-radio-button-wrapper::before {
   };
 
   // Keeps the group header just below the fixed top bar while the layout settles
-  let alignTimer = null;
+  let alignFrame = null;
   let alignCancel = false;
   ['wheel', 'touchstart', 'keydown'].forEach((t) =>
     window.addEventListener(
@@ -1197,7 +1185,7 @@ html body .ant-radio-button-wrapper::before {
     )
   );
   const alignGroup = (el) => {
-    cancelAnimationFrame(alignTimer);
+    cancelAnimationFrame(alignFrame);
     alignCancel = false;
     const t0 = performance.now();
     let steady = 0;
@@ -1212,15 +1200,15 @@ html body .ant-radio-button-wrapper::before {
         const move = Math.abs(d) < 8 ? d : d * 0.16;
         getScroller(el).scrollBy({ top: move, behavior: 'instant' });
       }
-      alignTimer = requestAnimationFrame(step);
+      alignFrame = requestAnimationFrame(step);
     };
-    alignTimer = requestAnimationFrame(step);
+    alignFrame = requestAnimationFrame(step);
   };
 
   let activeGroup = null;
   const selectGroup = (name) => {
     activeGroup = name;
-    setTimeout(() => tick(), 450);
+    setTimeout(tick, 450);
     const headers = getHeaders();
     const target = headers.find((h) => getName(h) === name);
     if (!target) return;
@@ -1228,9 +1216,7 @@ html body .ant-radio-button-wrapper::before {
       if (h !== target && isOpen(h)) getCaret(h).click(); // close the others
     });
     if (!isOpen(target)) getCaret(target).click();
-    setTimeout(() => {
-      alignGroup(target);
-    }, 350);
+    setTimeout(() => alignGroup(target), 350);
   };
 
   let nav = null;
@@ -1250,11 +1236,10 @@ html body .ant-radio-button-wrapper::before {
   };
 
   const renderGroups = () => {
-    const items = getHeaders().map((h) => ({
-      name: getName(h),
-      count: getCount(h),
-      open: isOpen(h) && getName(h) === activeGroup,
-    }));
+    const items = getHeaders().map((h) => {
+      const name = getName(h);
+      return { name, count: getCount(h), open: isOpen(h) && name === activeGroup };
+    });
     const key = items.map((i) => i.name + ':' + i.count + ':' + i.open).join('|');
     if (key === lastNavKey) return;
     lastNavKey = key;
@@ -1297,9 +1282,7 @@ html body .ant-radio-button-wrapper::before {
     if (ensureNav()) renderGroups();
   };
 
-  // ===================================================================
   // Page header: title, toolbar, banner
-  // ===================================================================
   let titleEl = null;
 
   // Find the page title by its text (outside the sidebar)
@@ -1354,11 +1337,6 @@ html body .ant-radio-button-wrapper::before {
     bar.append(btn);
   };
 
-  const updatePageHeader = () => {
-    ensureTitle();
-    ensureToolbar();
-  };
-
   // Search row above the update banner
   const reorderHeader = () => {
     const banner = document.querySelector('#root .ant-alert');
@@ -1409,7 +1387,6 @@ html body .ant-radio-button-wrapper::before {
     bar.style.setProperty('top', cur + d + 'px', 'important');
   };
 
-  // Toolbar buttons get Fluent glyphs
   const decorateToolbar = () => {
     const bar = document.querySelector('.wh-toolbar');
     if (!bar) return;
@@ -1428,9 +1405,7 @@ html body .ant-radio-button-wrapper::before {
       });
   };
 
-  // ===================================================================
   // Mod cards and card grid
-  // ===================================================================
 
   // First text = title, longest of the remaining texts = description
   const decorateCards = () => {
@@ -1484,8 +1459,7 @@ html body .ant-radio-button-wrapper::before {
         keep.add(box);
       }
       // Lists with a single card: climb the same number of levels as in other lists
-      document.querySelectorAll('#root .ant-card').forEach((c) => {
-        if (c.parentElement.closest('.ant-card') || !c.getClientRects().length) return;
+      cards.forEach((c) => {
         let a = c;
         for (let i = 0; i < gridDepth && a; i++) a = a.parentElement;
         if (!a || a.id === 'root' || a === document.body) return;
@@ -1522,9 +1496,7 @@ html body .ant-radio-button-wrapper::before {
     }
   };
 
-  // ===================================================================
   // Top-bar spacing only where the bar exists + scroll reset
-  // ===================================================================
   const isShown = (el) => el.getClientRects().length > 0;
   const onDetail = () => [...document.querySelectorAll('#root .ant-tabs')].some(isShown);
   // True only when a toolbar exists AND is visible, and we are not on a mod details page
@@ -1555,14 +1527,12 @@ html body .ant-radio-button-wrapper::before {
     }, 150);
   };
 
-  // ===================================================================
   // Statistics (Catalog / Installed / Enabled)
-  // ===================================================================
   const GKEY = 'wh-grp-enabled';
   let grpCache = {};
   try {
-    grpCache = JSON.parse(localStorage.getItem(GKEY) || '{}') || {};
-  } catch (e) {}
+    grpCache = JSON.parse(storage.get(GKEY) || '{}') || {};
+  } catch {}
 
   // Walks headers and switches in page order: switches before the first header
   // are ungrouped, the rest belong to the header above them.
@@ -1615,20 +1585,13 @@ html body .ant-radio-button-wrapper::before {
         partial = true; // closed group that was never opened yet
       }
     });
-    if (changed) {
-      try {
-        localStorage.setItem(GKEY, JSON.stringify(grpCache));
-      } catch (e) {}
-    }
+    if (changed) storage.set(GKEY, JSON.stringify(grpCache));
     return { total, on, partial };
   };
 
   // Catalog size (fetched from the online catalog, cached)
   const CKEY = 'wh-catalog-count';
-  let catalogCount = 0;
-  try {
-    catalogCount = parseInt(localStorage.getItem(CKEY) || '0', 10) || 0;
-  } catch (e) {}
+  let catalogCount = parseInt(storage.get(CKEY) || '0', 10) || 0;
 
   const loadCatalog = async (retries = 2) => {
     try {
@@ -1638,11 +1601,9 @@ html body .ant-radio-button-wrapper::before {
       const n = Array.isArray(mods) ? mods.length : Object.keys(mods).length;
       if (n > 0) {
         catalogCount = n;
-        try {
-          localStorage.setItem(CKEY, String(n));
-        } catch (e) {}
+        storage.set(CKEY, String(n));
       }
-    } catch (e) {
+    } catch {
       if (retries > 0) setTimeout(() => loadCatalog(retries - 1), 15000);
     }
   };
@@ -1680,13 +1641,12 @@ html body .ant-radio-button-wrapper::before {
     );
   };
 
-  // ===================================================================
   // Main loop
-  // ===================================================================
   const tick = () => {
     ensureStyle();
     updateSidebar();
-    updatePageHeader();
+    ensureTitle();
+    ensureToolbar();
     reorderHeader();
     markCardGrid();
     markBottomItems();
@@ -1698,6 +1658,8 @@ html body .ant-radio-button-wrapper::before {
     updateStats();
   };
 
+  // The observer only watches child list changes; the interval catches
+  // attribute-only changes (switch state, aria-expanded) it cannot see.
   let scheduled = false;
   const schedule = () => {
     if (scheduled) return;
@@ -1715,9 +1677,7 @@ html body .ant-radio-button-wrapper::before {
   setInterval(tick, 2000);
   tick();
 
-  // ===================================================================
   // Title bar: drag area + caption buttons, talks to the mod via window.whWindow
-  // ===================================================================
   (() => {
     if (document.getElementById('wh-tb')) return;
     const send = (type) => window.whWindow?.(JSON.stringify({ type }));
@@ -1780,10 +1740,28 @@ html body .ant-radio-button-wrapper::before {
     window.addEventListener('resize', syncMax);
     syncMax();
 
-    // Dim the icons while the window is not active
-    const syncFocus = () => bar.classList.toggle('wh-inactive', !document.hasFocus());
+      const syncFocus = () => bar.classList.toggle('wh-inactive', !document.hasFocus());
     window.addEventListener('focus', syncFocus);
     window.addEventListener('blur', syncFocus);
     syncFocus();
+
+    // Invisible resize handles on the top edge and the top corners.
+    // The mod starts the system sizing loop when it gets a "resize" message.
+    const mkHandle = (edge, handleCss, cursor) => {
+      const el = document.createElement('div');
+      el.style.cssText =
+        'position:fixed;z-index:2147483647;background:transparent;' + handleCss +
+        'cursor:' + cursor + ';';
+      el.addEventListener('mousedown', (e) => {
+        if (e.button === 0) {
+          e.preventDefault();
+          window.whWindow?.(JSON.stringify({ type: 'resize', edge }));
+        }
+      });
+      document.documentElement.appendChild(el);
+    };
+    mkHandle('t', 'top:0;left:8px;right:8px;height:4px;', 'ns-resize');
+    mkHandle('tl', 'top:0;left:0;width:8px;height:8px;', 'nwse-resize');
+    mkHandle('tr', 'top:0;right:0;width:8px;height:8px;', 'nesw-resize');
   })();
 })();
